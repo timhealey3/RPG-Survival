@@ -1,15 +1,27 @@
 ## RPG Survival Game
 
-### Plot
+### Design Document
 
-You are a Roman soldier stranded in Britain away from your legion. You have to survive 10 nights until your legion will make it back to you. You have to fight of waves of enemies, progessively getting harder. However, the Roman gods are on your side. As you progress you unlock the abilities of Jupiter, Nepture, and Mars.
+Software: C++ && SFML
 
-### Technical
+Graphics:
 
-This game is being worked on with the SFML library using C++.
+Sound Design:
 
-### TODO
+Setting: Britain 55 BC. 
 
-1. Items - Sword and Potion
-2. Equip Item
-3. Use Item
+Plot: Julius Ceasar invaded Britain with his Roman legion. You are one of his loyal soldiers, but in the chaos of the invasion you were lost. Survive alone as waves of enemies attack, and after many nights you will be reunited with the Roman legion.
+
+Items: Sword, Potions
+
+Chests: Store Items randomly around the map
+
+Abilities: Lightning bolt from Jupiter, Water wave from Neptune, Fury from Mars
+
+Stats: Sword has damage and durability
+
+Player: Sword Attack, Health, Abilities, Movement, Equip Items, Use Items, Open Chests
+
+Enemy: Health, A* pathfinding, Spawn, Attack
+
+Boss <Enemy>: Same as enemy but sprite is bigger and better stats
