@@ -3,11 +3,14 @@
 
 #include "Player.h"
 #include "Enemy.h"
+#include "Item.h"
+#include "Tiles.h"
 
 class Game {
 private:
     Player* player;
     Enemy* enemy;
+    TileMap map;
     std::vector<Enemy*> enemies;
     sf::RenderWindow* window;
     sf::View player_view;

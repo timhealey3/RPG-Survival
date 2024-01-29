@@ -11,6 +11,19 @@ Game::Game() {
     player_view.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
     player_view.setSize(this->window->getSize().x, this->window->getSize().y);
     this->window->setView(player_view);
+    const int level[] =
+            {
+                    2, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                    2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+                    2, 1, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+                    2, 1, 0, 0, 2, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+                    2, 1, 1, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+                    2, 1, 1, 0, 3, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+                    2, 1, 1, 0, 3, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+                    2, 1, 1, 0, 3, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+            };
+    if (!map.load("/Users/timhealey/CLionProjects/rpgGame/Tileset/tileSet.png", sf::Vector2u(32, 32), level, 16, 8, 4.f))
+        std::cout << "map did NOT load";
 }
 
 Game::~Game() {
@@ -31,6 +44,7 @@ void Game::initVariables() {
 void Game::initPlayer()
 {
     this->player = new Player();
+    this->player->setPosition(500.f, 500.f);
 }
 
 void Game::run() {
@@ -69,7 +83,7 @@ void Game::updateInput() {
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         this->player->move(0.f, 1.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
-        std::cout << "attack\n";
+        std::cout << "attack did " << this->player->getDamage() << "\n";
     }
 }
 
@@ -102,9 +116,11 @@ void Game::render() {
     this->window->clear();
     player_view.setCenter(player->getPos());
     this->window->setView(player_view);
+    this->window->draw(map);
     this->player->render(*this->window);
     for (auto& enemy : enemies) {
         enemy->render(*this->window);
     }
     this->window->display();
 }
+

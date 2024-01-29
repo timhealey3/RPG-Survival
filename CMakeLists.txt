@@ -13,7 +13,11 @@ add_executable(rpgGame main.cpp Game.cpp
         Player.cpp
         Player.h
         Enemy.cpp
-        Enemy.h)
+        Enemy.h
+        Item.cpp
+        Item.h
+        Tiles.cpp
+        Tiles.h)
 
 # Link SFML libraries
 target_link_libraries(rpgGame sfml-system sfml-window sfml-graphics)

@@ -2,6 +2,7 @@
 #include "Player.h"
 
 void Player::initVariables() {
+    this->damage = 1;
     this->hpMax = 100;
     this->hp = this->hpMax;
     this->gold = 0;
@@ -23,7 +24,7 @@ void Player::move(const float dirX, const float dirY) {
 }
 
 void Player::initSprite() {
-    this->sprite.setSize(sf::Vector2f(100, 100));
+    this->sprite.setSize(sf::Vector2f(75, 75));
 }
 
 void Player::setPosition(const float x, const float y) {
@@ -54,4 +55,8 @@ void Player::update() {
 
 void Player::render(sf::RenderTarget &target) {
     target.draw(this->sprite);
+}
+
+int Player::getDamage() {
+    return this->damage;
 }

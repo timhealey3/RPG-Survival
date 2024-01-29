@@ -12,6 +12,7 @@ private:
     int hp;
     int hpMax;
     int gold;
+    int damage;
     float attackCooldown;
     float attackCooldownMax;
     float movementSpeed;
@@ -23,6 +24,7 @@ public:
     const bool canAttack();
     const sf::Vector2f& getPos() const;
     void updateCooldown();
+    int getDamage();
     void setPosition(float x, float y);
     void move(float dirX, float dirY);
     void render(sf::RenderTarget& target);
