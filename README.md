@@ -25,3 +25,5 @@ Player: Sword Attack, Health, Abilities, Movement, Equip Items, Use Items, Open 
 Enemy: Health, A* pathfinding, Spawn, Attack
 
 Boss <Enemy>: Same as enemy but sprite is bigger and better stats
+
+Map <tiles>: The map is compromised of tiles. Player cannot walk through water or trees. But can on grass and cobblestone.
