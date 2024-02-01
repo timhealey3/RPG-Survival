@@ -22,6 +22,7 @@ public:
     Player();
     virtual ~Player();
     const bool canAttack();
+    const sf::FloatRect getBounds() const;
     const sf::Vector2f& getPos() const;
     void updateCooldown();
     int getDamage();

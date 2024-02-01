@@ -58,3 +58,7 @@ void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     // draw the vertex array
     target.draw(m_vertices, states);
 }
+
+sf::Vector2u TileMap::getTileSize() const {
+    return tileSize;
+}

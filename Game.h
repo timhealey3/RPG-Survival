@@ -10,7 +10,7 @@ class Game {
 private:
     Player* player;
     Enemy* enemy;
-    TileMap map;
+    TileMap* map;
     std::vector<Enemy*> enemies;
     sf::RenderWindow* window;
     sf::View player_view;
@@ -27,6 +27,7 @@ public:
     void render();
     void spawnEnemy();
     void moveEnemy();
+    bool collisionDetection(float dirX, float dirY);
     void updatePollEvents();
     void updateInput();
     void update();

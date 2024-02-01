@@ -20,6 +20,7 @@ Player::~Player() {
 }
 
 void Player::move(const float dirX, const float dirY) {
+    sf::Vector2f currentPosition = this->sprite.getPosition();
     this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
@@ -59,4 +60,8 @@ void Player::render(sf::RenderTarget &target) {
 
 int Player::getDamage() {
     return this->damage;
+}
+
+const sf::FloatRect Player::getBounds() const {
+    return this->sprite.getGlobalBounds();
 }
