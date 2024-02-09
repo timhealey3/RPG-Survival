@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include "hitbox.h"
 
 class Player {
 private:
@@ -22,6 +23,7 @@ public:
     Player();
     virtual ~Player();
     const bool canAttack();
+    hitbox hitBox;
     const sf::FloatRect getBounds() const;
     const sf::Vector2f& getPos() const;
     void updateCooldown();

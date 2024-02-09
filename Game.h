@@ -5,13 +5,16 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "Tiles.h"
+#include "chests.h"
 
 class Game {
 private:
     Player* player;
     Enemy* enemy;
     TileMap* map;
+    Chest* chest;
     std::vector<Enemy*> enemies;
+    std::vector<Chest*> chests;
     sf::RenderWindow* window;
     sf::View player_view;
     int maxSpawn;
@@ -25,9 +28,9 @@ public:
     virtual ~Game();
     void run();
     void render();
+    void spawnChest();
     void spawnEnemy();
     void moveEnemy();
-    bool collisionDetection(float dirX, float dirY);
     void updatePollEvents();
     void updateInput();
     void update();

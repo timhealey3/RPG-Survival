@@ -91,6 +91,20 @@ build CMakeFiles/rpgGame.dir/Tiles.cpp.o: CXX_COMPILER__rpgGame_unscanned_Debug 
   OBJECT_DIR = CMakeFiles/rpgGame.dir
   OBJECT_FILE_DIR = CMakeFiles/rpgGame.dir
 
+build CMakeFiles/rpgGame.dir/hitbox.cpp.o: CXX_COMPILER__rpgGame_unscanned_Debug /Users/timhealey/CLionProjects/rpgGame/hitbox.cpp || cmake_object_order_depends_target_rpgGame
+  DEP_FILE = CMakeFiles/rpgGame.dir/hitbox.cpp.o.d
+  FLAGS = -g -std=gnu++11 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -fcolor-diagnostics
+  INCLUDES = -isystem /opt/homebrew/Cellar/sfml/2.6.1/include
+  OBJECT_DIR = CMakeFiles/rpgGame.dir
+  OBJECT_FILE_DIR = CMakeFiles/rpgGame.dir
+
+build CMakeFiles/rpgGame.dir/chests.cpp.o: CXX_COMPILER__rpgGame_unscanned_Debug /Users/timhealey/CLionProjects/rpgGame/chests.cpp || cmake_object_order_depends_target_rpgGame
+  DEP_FILE = CMakeFiles/rpgGame.dir/chests.cpp.o.d
+  FLAGS = -g -std=gnu++11 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk -fcolor-diagnostics
+  INCLUDES = -isystem /opt/homebrew/Cellar/sfml/2.6.1/include
+  OBJECT_DIR = CMakeFiles/rpgGame.dir
+  OBJECT_FILE_DIR = CMakeFiles/rpgGame.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target rpgGame
@@ -99,7 +113,7 @@ build CMakeFiles/rpgGame.dir/Tiles.cpp.o: CXX_COMPILER__rpgGame_unscanned_Debug 
 #############################################
 # Link the executable rpgGame
 
-build rpgGame: CXX_EXECUTABLE_LINKER__rpgGame_Debug CMakeFiles/rpgGame.dir/main.cpp.o CMakeFiles/rpgGame.dir/Game.cpp.o CMakeFiles/rpgGame.dir/Player.cpp.o CMakeFiles/rpgGame.dir/Enemy.cpp.o CMakeFiles/rpgGame.dir/Item.cpp.o CMakeFiles/rpgGame.dir/Tiles.cpp.o | /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-graphics.2.6.1.dylib /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-window.2.6.1.dylib /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-system.2.6.1.dylib
+build rpgGame: CXX_EXECUTABLE_LINKER__rpgGame_Debug CMakeFiles/rpgGame.dir/main.cpp.o CMakeFiles/rpgGame.dir/Game.cpp.o CMakeFiles/rpgGame.dir/Player.cpp.o CMakeFiles/rpgGame.dir/Enemy.cpp.o CMakeFiles/rpgGame.dir/Item.cpp.o CMakeFiles/rpgGame.dir/Tiles.cpp.o CMakeFiles/rpgGame.dir/hitbox.cpp.o CMakeFiles/rpgGame.dir/chests.cpp.o | /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-graphics.2.6.1.dylib /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-window.2.6.1.dylib /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-system.2.6.1.dylib
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/Cellar/sfml/2.6.1/lib  /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-graphics.2.6.1.dylib  /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-window.2.6.1.dylib  /opt/homebrew/Cellar/sfml/2.6.1/lib/libsfml-system.2.6.1.dylib
   OBJECT_DIR = CMakeFiles/rpgGame.dir

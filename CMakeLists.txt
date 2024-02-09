@@ -17,7 +17,11 @@ add_executable(rpgGame main.cpp Game.cpp
         Item.cpp
         Item.h
         Tiles.cpp
-        Tiles.h)
+        Tiles.h
+        hitbox.cpp
+        hitbox.h
+        chests.cpp
+        chests.h)
 
 # Link SFML libraries
 target_link_libraries(rpgGame sfml-system sfml-window sfml-graphics)

@@ -60,5 +60,10 @@ void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 sf::Vector2u TileMap::getTileSize() const {
-    return tileSize;
+    std::cout << tileSize.x << " X \n";
+    std::cout << tileSize.y << " Y \n";
+    return sf::Vector2u();
 }
+
+
+
