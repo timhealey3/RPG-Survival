@@ -23,6 +23,8 @@ public:
     Chest();
     virtual ~Chest();
     void render(sf::RenderTarget &target);
+    const sf::Vector2f& getPos() const;
+    const int getGold() const;
     void setPosition();
 };
 

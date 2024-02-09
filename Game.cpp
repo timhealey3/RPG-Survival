@@ -14,14 +14,14 @@ Game::Game() {
     this->window->setView(player_view);
     const int level[] =
             {
-                    3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                    3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
                     3, 0, 0, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    3, 0, 0, 3, 0, 0, 0, 3, 0, 0, 1, 1, 1, 0, 0, 0,
-                    3, 0, 0, 0, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+                    3, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1, 1, 0, 0, 3,
+                    3, 0, 0, 0, 3, 3, 3, 0, 0, 0, 1, 1, 0, 2, 0, 3,
+                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 3,
+                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 0,
+                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 0,
             };
     // TODO come up with map and player position
     if (!map->load("/Users/timhealey/CLionProjects/rpgGame/Tileset/tileSet.png", sf::Vector2u(32, 32), level, 16, 8, 4.f))
@@ -80,8 +80,30 @@ void Game::update() {
 }
 
 void Game::updateInput() {
+    // open chests
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && this->player->canAttack()) {
+        for (auto &chest: chests) {
+            float distance = std::sqrt(std::pow(chest->getPos().x - this->player->getPos().x, 2) +
+                                       std::pow(chest->getPos().y - this->player->getPos().y, 2));
+            if (distance <= 90.0f ) {
+                if (chest->getGold() <= this->player->getGold()) {
+                    std::cout << chest->getGold() << std::endl;
+                }
+                else {
+                    std::cout << chest->getGold() << " costs, you only have " << this->player->getGold() << std::endl;
+                }
+            }
+        }
+    }
+    // attack
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
+        for (auto &enemy : enemies) {
+            if (this->player->getBounds().intersects(this->enemy->getPos())) {
+                std::cout << "attack did " << this->player->getDamage() << "\n";
+            }
+        }
+    }
     // move player
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {        // move to the left. if water or tree do not move
         //std::cout << this->map->getTileSize().x << " in Game\n";
         this->player->move(-1.f, 0.f);
@@ -92,9 +114,6 @@ void Game::updateInput() {
         this->player->move(0.f, -1.f);
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         this->player->move(0.f, 1.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
-        std::cout << "attack did " << this->player->getDamage() << "\n";
-    }
 
 }
 

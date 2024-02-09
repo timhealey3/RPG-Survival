@@ -65,3 +65,7 @@ int Player::getDamage() {
 const sf::FloatRect Player::getBounds() const {
     return this->sprite.getGlobalBounds();
 }
+
+const int Player::getGold() const {
+   return this->gold;
+}

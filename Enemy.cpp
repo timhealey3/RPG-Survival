@@ -37,3 +37,13 @@ void Enemy::render(sf::RenderTarget &target) {
 void Enemy::moveEn(float dirX, float dirY) {
     this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
+
+
+
+const sf::FloatRect Enemy::getPos() const {
+    return this->sprite.getGlobalBounds();
+}
+
+const int Enemy::getHp() const {
+    return this->hp;
+}

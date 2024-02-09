@@ -5,7 +5,7 @@
 #include "chests.h"
 
 void Chest::initVariables() {
-    this->tier = std::rand() % 3;
+    this->tier = (std::rand() % 3) + 1;
     this->cost = tier * 100;
 }
 
@@ -43,6 +43,16 @@ void Chest::initTexture() {
 void Chest::render(sf::RenderTarget &target) {
     target.draw(this->shape);
 }
+
+const sf::Vector2f &Chest::getPos() const {
+    return this->shape.getPosition();
+}
+
+const int Chest::getGold() const {
+    return this->cost;
+}
+
+
 
 
 

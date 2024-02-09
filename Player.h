@@ -25,6 +25,7 @@ public:
     const bool canAttack();
     hitbox hitBox;
     const sf::FloatRect getBounds() const;
+    const int getGold() const;
     const sf::Vector2f& getPos() const;
     void updateCooldown();
     int getDamage();

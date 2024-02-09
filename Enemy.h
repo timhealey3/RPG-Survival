@@ -20,6 +20,8 @@ public:
     Enemy();
     virtual ~Enemy();
     void setPosition(float x, float y);
+    const int getHp() const;
+    const sf::FloatRect getPos() const;
     void moveEn(float dirX, float dirY);
     void render(sf::RenderTarget& target);
 };
