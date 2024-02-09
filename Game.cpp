@@ -97,12 +97,24 @@ void Game::updateInput() {
     }
     // attack
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
-        for (auto &enemy : enemies) {
-            if (this->player->getBounds().intersects(this->enemy->getPos())) {
+        for (auto it = enemies.begin(); it != enemies.end();) {
+            if (this->player->getBounds().intersects((*it)->getPos())) {
+                std::cout << "before HP " << (*it)->getHp() << std::endl;
+                (*it)->setHPDmg(this->player->getDamage());
+                std::cout << "after HP " << (*it)->getHp()  << std::endl;
                 std::cout << "attack did " << this->player->getDamage() << "\n";
+                // if killed enemy
+                if ((*it)->getHp() <= 0) {
+                    it = enemies.erase(it);
+                } else {
+                    ++it;
+                }
+            } else {
+                ++it;
             }
         }
     }
+
     // move player
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {        // move to the left. if water or tree do not move
         //std::cout << this->map->getTileSize().x << " in Game\n";

@@ -20,6 +20,7 @@ public:
     Enemy();
     virtual ~Enemy();
     void setPosition(float x, float y);
+    void setHPDmg(int hpDmg);
     const int getHp() const;
     const sf::FloatRect getPos() const;
     void moveEn(float dirX, float dirY);

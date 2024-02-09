@@ -39,11 +39,14 @@ void Enemy::moveEn(float dirX, float dirY) {
 }
 
 
-
 const sf::FloatRect Enemy::getPos() const {
     return this->sprite.getGlobalBounds();
 }
 
 const int Enemy::getHp() const {
     return this->hp;
+}
+
+void Enemy::setHPDmg(int hpDmg) {
+    this->hp -= hpDmg;
 }
