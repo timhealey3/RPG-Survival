@@ -8,11 +8,13 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include "Item.h"
 
 class Chest {
 private:
     sf::Sprite shape;
     sf::Texture texture;
+    Item* item;
     int tier;
     int cost;
     // item
@@ -25,6 +27,8 @@ public:
     void render(sf::RenderTarget &target);
     const sf::Vector2f& getPos() const;
     const int getGold() const;
+    const Item* getItem() const;
+    void setItem();
     void setPosition();
 };
 

@@ -14,7 +14,7 @@ Enemy::~Enemy() {
 }
 
 void Enemy::initVariables() {
-    this->gold = 5;
+    this->gold = 100;
     this->hpMax = 10;
     this->hp = hpMax;
     this->attackCooldown = 1.f;
@@ -49,4 +49,8 @@ const int Enemy::getHp() const {
 
 void Enemy::setHPDmg(int hpDmg) {
     this->hp -= hpDmg;
+}
+
+const int Enemy::getGold() const {
+    return this->gold;
 }

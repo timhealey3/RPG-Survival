@@ -14,6 +14,7 @@ Chest::Chest() {
     this->initTexture();
     this->initShape();
     this->setPosition();
+    this->setItem();
 }
 
 Chest::~Chest() {
@@ -51,6 +52,27 @@ const sf::Vector2f &Chest::getPos() const {
 const int Chest::getGold() const {
     return this->cost;
 }
+
+void Chest::setItem() {
+    if (this->tier == 1) {
+        item = new Item("Sword", 2);
+    }
+    else if (this->tier == 2) {
+        item = new Item("Gladius", 4);
+    }
+    else if (this->tier == 3) {
+        item = new Item("Sword of Neptune", 10);
+    }
+    // should never hit
+    else {
+        item = new Item("Wood Sword", 1);
+    }
+}
+
+const Item* Chest::getItem() const {
+    return item;
+}
+
 
 
 

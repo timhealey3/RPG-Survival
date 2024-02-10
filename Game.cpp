@@ -87,6 +87,18 @@ void Game::updateInput() {
                                        std::pow(chest->getPos().y - this->player->getPos().y, 2));
             if (distance <= 90.0f ) {
                 if (chest->getGold() <= this->player->getGold()) {
+                    // subtract gold too
+                    //const
+                    const Item* chestItem = chest->getItem();
+                    if (chestItem) {
+                        std::cout << "Name: " << chestItem->getItemName() << " Damage: " << chestItem->getDamage() << std::endl;
+                        this->player->subGold(chest->getGold());
+                        this->player->setItem(chestItem);
+                    } else {
+                        std::cout << "Chest has no item." << std::endl;
+                    }
+                    //this->player->setItem(chest->getItem());
+                    //const Item* playerItem = player->getItem();
                     std::cout << chest->getGold() << std::endl;
                 }
                 else {
@@ -100,11 +112,12 @@ void Game::updateInput() {
         for (auto it = enemies.begin(); it != enemies.end();) {
             if (this->player->getBounds().intersects((*it)->getPos())) {
                 std::cout << "before HP " << (*it)->getHp() << std::endl;
-                (*it)->setHPDmg(this->player->getDamage());
+                (*it)->setHPDmg(this->player->getItem()->getDamage());
                 std::cout << "after HP " << (*it)->getHp()  << std::endl;
-                std::cout << "attack did " << this->player->getDamage() << "\n";
+                std::cout << "attack did " << this->player->getItem()->getDamage() << "\n";
                 // if killed enemy
                 if ((*it)->getHp() <= 0) {
+                    this->player->addGold((*it)->getGold());
                     it = enemies.erase(it);
                 } else {
                     ++it;

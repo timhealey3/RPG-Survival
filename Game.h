@@ -13,6 +13,7 @@ private:
     Enemy* enemy;
     TileMap* map;
     Chest* chest;
+    Item* item;
     std::vector<Enemy*> enemies;
     std::vector<Chest*> chests;
     sf::RenderWindow* window;

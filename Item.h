@@ -6,10 +6,13 @@ class Item {
 private:
     int damage;
     std::string Name;
-    void initVariables();
+    void initVariables(const std::string& itemName, int damageVar);
 public:
-    Item();
+    Item(const std::string& itemName, int damageVar);
     virtual ~Item();
+    const int getDamage() const;
+    const std::string getItemName() const;
+    void setDamage(int newDamage);
 };
 
 

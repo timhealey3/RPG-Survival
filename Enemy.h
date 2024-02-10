@@ -22,6 +22,7 @@ public:
     void setPosition(float x, float y);
     void setHPDmg(int hpDmg);
     const int getHp() const;
+    const int getGold() const;
     const sf::FloatRect getPos() const;
     void moveEn(float dirX, float dirY);
     void render(sf::RenderTarget& target);
