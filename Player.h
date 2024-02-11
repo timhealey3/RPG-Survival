@@ -10,11 +10,22 @@
 
 class Player {
 private:
-    sf::RectangleShape sprite;
+    sf::Sprite sprite;
+    sf::Texture texture;
     Item* item;
+    sf::Vector2u spriteSize;
+    sf::Clock animationClock;
+    float animationSpeed = 0.11f;
+    unsigned int currentFrame = 0;
+    unsigned int frameCount = 6;
     int hp;
     int hpMax;
     int gold;
+    bool isWalking;
+    bool isAttacking;
+    bool isLeft;
+    bool isRight;
+    bool isIdle;
     int damage;
     float attackCooldown;
     float attackCooldownMax;
@@ -32,6 +43,7 @@ public:
     void updateCooldown();
     int getDamage();
     void setPosition(float x, float y);
+    void setAnimationFacing(bool right, bool left, bool idle, bool walk, bool attack);
     void addGold(int addGold);
     void subGold(int subGold);
     void setItem(const Item* newItem);

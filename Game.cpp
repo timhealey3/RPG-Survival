@@ -87,8 +87,6 @@ void Game::updateInput() {
                                        std::pow(chest->getPos().y - this->player->getPos().y, 2));
             if (distance <= 90.0f ) {
                 if (chest->getGold() <= this->player->getGold()) {
-                    // subtract gold too
-                    //const
                     const Item* chestItem = chest->getItem();
                     if (chestItem) {
                         std::cout << "Name: " << chestItem->getItemName() << " Damage: " << chestItem->getDamage() << std::endl;
@@ -131,10 +129,13 @@ void Game::updateInput() {
     // move player
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {        // move to the left. if water or tree do not move
         //std::cout << this->map->getTileSize().x << " in Game\n";
+        this->player->setAnimationFacing(false, true, true, false, true);
         this->player->move(-1.f, 0.f);
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        this->player->setAnimationFacing(true, false, false, true, true);
         this->player->move(1.f, 0.f);
+    }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         this->player->move(0.f, -1.f);
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))

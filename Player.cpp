@@ -8,6 +8,8 @@ void Player::initVariables() {
     this->gold = 0;
     this->movementSpeed = 2.5f;
     this->attackCooldownMax = 10.f;
+    this->isIdle = true;
+    this->isRight = true;
     this->attackCooldown = this->attackCooldownMax;
 }
 
@@ -26,7 +28,15 @@ void Player::move(const float dirX, const float dirY) {
 }
 
 void Player::initSprite() {
-    this->sprite.setSize(sf::Vector2f(75, 75));
+    texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/char1.png");
+    sprite.setTexture(texture);
+
+    // Set the sprite size
+    spriteSize.x = 56;
+    spriteSize.y = 56;
+
+    sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
+    sprite.scale(2.5f, 2.5f);
 }
 
 void Player::setPosition(const float x, const float y) {
@@ -53,6 +63,55 @@ void Player::updateCooldown() {
 
 void Player::update() {
     this->updateCooldown();
+    // Increment the current frame
+    // Check if the player is idle and facing right
+    sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
+    if (this->isIdle && this->isRight) {
+        // Update animation only if enough time has passed
+        if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+            // Update the texture rect based on the current frame
+            sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
+            sprite.setScale(2.5f, 2.5f);
+            // Increment the current frame
+            currentFrame++;
+            // Wrap the animation loop
+            if (currentFrame >= frameCount) {
+                currentFrame = 0;
+            }
+            // Restart the animation clock
+            animationClock.restart();
+        }
+    }
+    else if (this->isIdle && this->isLeft) {
+        if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+            // Update the texture rect based on the current frame
+            sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
+            sprite.setScale(-2.5f, 2.5f);
+            // Increment the current frame
+            currentFrame++;
+            // Wrap the animation loop
+            if (currentFrame >= frameCount) {
+                currentFrame = 0;
+            }
+            // Restart the animation clock
+            animationClock.restart();
+        }
+    }
+    else if (this->isWalking && this->isRight) {
+        if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+            // Update the texture rect based on the current frame
+            sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y * 2, spriteSize.x, spriteSize.y));
+            sprite.setScale(2.5f, 2.5f);
+            // Increment the current frame
+            currentFrame++;
+            // Wrap the animation loop
+            if (currentFrame >= frameCount) {
+                currentFrame = 0;
+            }
+            // Restart the animation clock
+            animationClock.restart();
+        }
+    }
 }
 
 void Player::render(sf::RenderTarget &target) {
@@ -86,6 +145,14 @@ Item *const Player::getItem() const {
 
 void Player::subGold(int subGold) {
     this->gold -= subGold;
+}
+
+void Player::setAnimationFacing(bool right, bool left, bool idle, bool walk, bool attack) {
+    this->isRight = right;
+    this->isLeft = left;
+    this->isIdle = idle;
+    this->isWalking = walk;
+    this->isAttacking = attack;
 }
 
 
