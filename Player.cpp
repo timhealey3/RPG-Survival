@@ -7,7 +7,7 @@ void Player::initVariables() {
     this->hp = this->hpMax;
     this->gold = 0;
     this->movementSpeed = 2.5f;
-    this->attackCooldownMax = 10.f;
+    this->attackCooldownMax = 15.f;
     this->isIdle = true;
     this->isRight = true;
     this->attackCooldown = this->attackCooldownMax;
@@ -64,55 +64,109 @@ void Player::updateCooldown() {
 void Player::update() {
     this->updateCooldown();
     // Increment the current frame
-    // Check if the player is idle and facing right
     sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
-    if (this->isIdle && this->isRight) {
-        // Update animation only if enough time has passed
-        if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
-            // Update the texture rect based on the current frame
-            sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
-            sprite.setScale(2.5f, 2.5f);
-            // Increment the current frame
-            currentFrame++;
-            // Wrap the animation loop
-            if (currentFrame >= frameCount) {
-                currentFrame = 0;
+
+    if (this->isAttacking) {
+        if (this->isRight) {
+            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+                // Update the texture rect based on the current frame
+                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y, spriteSize.x, spriteSize.y));
+                sprite.setScale(2.5f, 2.5f);
+                // Increment the current frame
+                currentFrame++;
+                // Wrap the animation loop
+                if (currentFrame >= frameCount) {
+                    currentFrame = 0;
+                    this->isAttacking = false;
+                }
+                // Restart the animation clock
+                animationClock.restart();
             }
-            // Restart the animation clock
-            animationClock.restart();
+        }
+        if (this->isLeft) {
+            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+                // Update the texture rect based on the current frame
+                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y, spriteSize.x, spriteSize.y));
+                sprite.setScale(-2.5f, 2.5f);
+                // Increment the current frame
+                currentFrame++;
+                // Wrap the animation loop
+                if (currentFrame >= frameCount) {
+                    currentFrame = 0;
+                    this->isAttacking = false;
+                }
+                // Restart the animation clock
+                animationClock.restart();
+            }
         }
     }
-    else if (this->isIdle && this->isLeft) {
-        if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
-            // Update the texture rect based on the current frame
-            sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
-            sprite.setScale(-2.5f, 2.5f);
-            // Increment the current frame
-            currentFrame++;
-            // Wrap the animation loop
-            if (currentFrame >= frameCount) {
-                currentFrame = 0;
+    if (this->isWalking) {
+        if (this->isRight) {
+            // Update animation only if enough time has passed
+            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+                // Update the texture rect based on the current frame
+                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y * 2, spriteSize.x, spriteSize.y));
+                sprite.setScale(2.5f, 2.5f);
+                // Increment the current frame
+                currentFrame++;
+                // Wrap the animation loop
+                if (currentFrame >= frameCount) {
+                    currentFrame = 0;
+                }
+                // Restart the animation clock
+                animationClock.restart();
             }
-            // Restart the animation clock
-            animationClock.restart();
+        } else if (this->isLeft) {
+            // Update animation only if enough time has passed
+            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+                // Update the texture rect based on the current frame
+                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y * 2, spriteSize.x, spriteSize.y));
+                sprite.setScale(-2.5f, 2.5f);
+                // Increment the current frame
+                currentFrame++;
+                // Wrap the animation loop
+                if (currentFrame >= frameCount) {
+                    currentFrame = 0;
+                }
+                // Restart the animation clock
+                animationClock.restart();
+            }
         }
-    }
-    else if (this->isWalking && this->isRight) {
-        if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
-            // Update the texture rect based on the current frame
-            sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y * 2, spriteSize.x, spriteSize.y));
-            sprite.setScale(2.5f, 2.5f);
-            // Increment the current frame
-            currentFrame++;
-            // Wrap the animation loop
-            if (currentFrame >= frameCount) {
-                currentFrame = 0;
+    } else if (this->isIdle) {
+        if (this->isRight) {
+            // Update animation only if enough time has passed
+            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+                // Update the texture rect based on the current frame
+                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
+                sprite.setScale(2.5f, 2.5f);
+                // Increment the current frame
+                currentFrame++;
+                // Wrap the animation loop
+                if (currentFrame >= frameCount) {
+                    currentFrame = 0;
+                }
+                // Restart the animation clock
+                animationClock.restart();
             }
-            // Restart the animation clock
-            animationClock.restart();
+        } else if (this->isLeft) {
+            // Update animation only if enough time has passed
+            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+                // Update the texture rect based on the current frame
+                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
+                sprite.setScale(-2.5f, 2.5f);
+                // Increment the current frame
+                currentFrame++;
+                // Wrap the animation loop
+                if (currentFrame >= frameCount) {
+                    currentFrame = 0;
+                }
+                // Restart the animation clock
+                animationClock.restart();
+            }
         }
     }
 }
+
 
 void Player::render(sf::RenderTarget &target) {
     target.draw(this->sprite);
@@ -147,12 +201,28 @@ void Player::subGold(int subGold) {
     this->gold -= subGold;
 }
 
-void Player::setAnimationFacing(bool right, bool left, bool idle, bool walk, bool attack) {
-    this->isRight = right;
-    this->isLeft = left;
-    this->isIdle = idle;
-    this->isWalking = walk;
-    this->isAttacking = attack;
+void Player::setAnimationFacing(int action) {
+    if (action == 0) {
+        this->isIdle = true;
+        this->isWalking = false;
+    }
+    if (action == 1) {
+        this->isRight = false;
+        this->isLeft = true;
+        this->isIdle = false;
+        this->isWalking = true;
+    }
+    if (action == 2) {
+        this->isRight = true;
+        this->isLeft = false;
+        this->isIdle = false;
+        this->isWalking = true;
+    }
+    if (action == 3) {
+        this->isAttacking = true;
+        this->isIdle = false;
+    }
+
 }
 
 

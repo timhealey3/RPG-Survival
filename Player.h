@@ -43,7 +43,7 @@ public:
     void updateCooldown();
     int getDamage();
     void setPosition(float x, float y);
-    void setAnimationFacing(bool right, bool left, bool idle, bool walk, bool attack);
+    void setAnimationFacing(int action);
     void addGold(int addGold);
     void subGold(int subGold);
     void setItem(const Item* newItem);

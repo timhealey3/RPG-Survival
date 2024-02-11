@@ -107,6 +107,7 @@ void Game::updateInput() {
     }
     // attack
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
+        this->player->setAnimationFacing(3);
         for (auto it = enemies.begin(); it != enemies.end();) {
             if (this->player->getBounds().intersects((*it)->getPos())) {
                 std::cout << "before HP " << (*it)->getHp() << std::endl;
@@ -127,20 +128,24 @@ void Game::updateInput() {
     }
 
     // move player
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {        // move to the left. if water or tree do not move
-        //std::cout << this->map->getTileSize().x << " in Game\n";
-        this->player->setAnimationFacing(false, true, true, false, true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        this->player->setAnimationFacing(1);
         this->player->move(-1.f, 0.f);
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        this->player->setAnimationFacing(true, false, false, true, true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        this->player->setAnimationFacing(2);
         this->player->move(1.f, 0.f);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         this->player->move(0.f, -1.f);
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         this->player->move(0.f, 1.f);
-
+    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
+        !sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
+        !sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
+        !sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        this->player->setAnimationFacing(0);
+    }
 }
 
 void Game::spawnEnemy() {
