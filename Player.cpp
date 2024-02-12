@@ -228,4 +228,19 @@ void Player::setAnimationFacing(int action) {
     }
 }
 
+const sf::FloatRect Player::getSwordBounds() const {
+    float swordWidth = 20.0f;
+    float swordHeight = 60.0f;
+
+    sf::Vector2f swordPosition;
+
+    if (this->isRight) {
+        swordPosition = sf::Vector2f(this->getPos().x + 50.0f, this->getPos().y); // Adjust the offset based on your sprite
+    } else {
+        swordPosition = sf::Vector2f(this->getPos().x - 50.0f, this->getPos().y); // Adjust the offset based on your sprite
+    }
+
+    return sf::FloatRect(swordPosition.x, swordPosition.y, swordWidth, swordHeight);
+}
+
 

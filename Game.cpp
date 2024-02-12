@@ -109,7 +109,8 @@ void Game::updateInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
         this->player->setAnimationFacing(3);
         for (auto it = enemies.begin(); it != enemies.end();) {
-            if (this->player->getBounds().intersects((*it)->getPos())) {
+            // if player is facing a direction. only on sword animation
+            if (this->player->getSwordBounds().intersects((*it)->getPos())) {
                 std::cout << "before HP " << (*it)->getHp() << std::endl;
                 (*it)->setHPDmg(this->player->getItem()->getDamage());
                 std::cout << "after HP " << (*it)->getHp()  << std::endl;

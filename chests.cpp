@@ -38,7 +38,13 @@ void Chest::initTexture() {
 
     // Create a sprite to display a single frame
     shape.setTexture(texture);
-    shape.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
+    if (this->tier == 1)
+        shape.setTextureRect(sf::IntRect(0, spriteSize.x * 0, spriteSize.x, spriteSize.y));
+    else if (this->tier == 2)
+        shape.setTextureRect(sf::IntRect(0, spriteSize.x * 2, spriteSize.x, spriteSize.y));
+    else if (this->tier == 3)
+        shape.setTextureRect(sf::IntRect(0, spriteSize.x * 4, spriteSize.x, spriteSize.y));
+
 }
 
 void Chest::render(sf::RenderTarget &target) {

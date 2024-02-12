@@ -48,6 +48,7 @@ public:
     void subGold(int subGold);
     void setItem(const Item* newItem);
     Item *const getItem() const;
+    const sf::FloatRect getSwordBounds() const;
     void move(float dirX, float dirY);
     void render(sf::RenderTarget& target);
     void update();
