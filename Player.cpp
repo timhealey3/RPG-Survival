@@ -222,7 +222,10 @@ void Player::setAnimationFacing(int action) {
         this->isAttacking = true;
         this->isIdle = false;
     }
-
+    if (action == 4) {
+        this->isWalking = true;
+        this->isIdle = false;
+    }
 }
 
 

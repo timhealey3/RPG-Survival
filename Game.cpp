@@ -136,10 +136,14 @@ void Game::updateInput() {
         this->player->setAnimationFacing(2);
         this->player->move(1.f, 0.f);
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        this->player->setAnimationFacing(4);
         this->player->move(0.f, -1.f);
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        this->player->setAnimationFacing(4);
         this->player->move(0.f, 1.f);
+    }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
         !sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
         !sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
