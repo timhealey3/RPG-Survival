@@ -17,7 +17,9 @@ private:
     Item* item;
     int tier;
     int cost;
+    bool opened;
     // item
+    void handleOpened() ;
     void initVariables();
     void initShape();
     void initTexture();
@@ -27,8 +29,9 @@ public:
     void render(sf::RenderTarget &target);
     const sf::Vector2f& getPos() const;
     const int getGold() const;
-    const Item* getItem() const;
+    const Item* getItem() ;
     void setItem();
+    bool getOpened();
     void setPosition();
 };
 

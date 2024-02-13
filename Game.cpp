@@ -87,17 +87,20 @@ void Game::updateInput() {
                                        std::pow(chest->getPos().y - this->player->getPos().y, 2));
             if (distance <= 90.0f ) {
                 if (chest->getGold() <= this->player->getGold()) {
-                    const Item* chestItem = chest->getItem();
-                    if (chestItem) {
-                        std::cout << "Name: " << chestItem->getItemName() << " Damage: " << chestItem->getDamage() << std::endl;
-                        this->player->subGold(chest->getGold());
-                        this->player->setItem(chestItem);
-                    } else {
-                        std::cout << "Chest has no item." << std::endl;
+                    if (!chest->getOpened()) {
+                        const Item *chestItem = chest->getItem();
+                        if (chestItem) {
+                            std::cout << "Name: " << chestItem->getItemName() << " Damage: " << chestItem->getDamage()
+                                      << std::endl;
+                            this->player->subGold(chest->getGold());
+                            this->player->setItem(chestItem);
+                        } else {
+                            std::cout << "Chest has no item." << std::endl;
+                        }
+                        //this->player->setItem(chest->getItem());
+                        //const Item* playerItem = player->getItem();
+                        std::cout << chest->getGold() << std::endl;
                     }
-                    //this->player->setItem(chest->getItem());
-                    //const Item* playerItem = player->getItem();
-                    std::cout << chest->getGold() << std::endl;
                 }
                 else {
                     std::cout << chest->getGold() << " costs, you only have " << this->player->getGold() << std::endl;

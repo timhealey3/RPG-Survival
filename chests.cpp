@@ -7,6 +7,7 @@
 void Chest::initVariables() {
     this->tier = (std::rand() % 3) + 1;
     this->cost = tier * 100;
+    this->opened = false;
 }
 
 Chest::Chest() {
@@ -75,8 +76,28 @@ void Chest::setItem() {
     }
 }
 
-const Item* Chest::getItem() const {
+const Item* Chest::getItem() {
     return item;
+}
+
+void Chest::handleOpened() {
+    this->opened = true;
+    sf::Vector2u spriteSize(32, 32);
+    if (this->tier == 1)
+        shape.setTextureRect(sf::IntRect(0, spriteSize.x * 1, spriteSize.x, spriteSize.y));
+    else if (this->tier == 2)
+        shape.setTextureRect(sf::IntRect(0, spriteSize.x * 3, spriteSize.x, spriteSize.y));
+    else if (this->tier == 3)
+        shape.setTextureRect(sf::IntRect(0, spriteSize.x * 5, spriteSize.x, spriteSize.y));
+}
+
+bool Chest::getOpened() {
+    if (!this->opened) {
+        handleOpened();
+        return false;
+    }
+    else
+        return true;
 }
 
 
