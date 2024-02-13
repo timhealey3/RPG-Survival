@@ -235,9 +235,9 @@ const sf::FloatRect Player::getSwordBounds() const {
     sf::Vector2f swordPosition;
 
     if (this->isRight) {
-        swordPosition = sf::Vector2f(this->getPos().x + 60.0f, this->getPos().y); // Adjust the offset based on your sprite
+        swordPosition = sf::Vector2f(this->getPos().x + 60.0f, this->getPos().y);
     } else {
-        swordPosition = sf::Vector2f(this->getPos().x - 60.0f, this->getPos().y); // Adjust the offset based on your sprite
+        swordPosition = sf::Vector2f(this->getPos().x - 60.0f, this->getPos().y);
     }
 
     return sf::FloatRect(swordPosition.x, swordPosition.y, swordWidth, swordHeight);

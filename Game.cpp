@@ -94,12 +94,10 @@ void Game::updateInput() {
                                       << std::endl;
                             this->player->subGold(chest->getGold());
                             this->player->setItem(chestItem);
-                        } else {
-                            std::cout << "Chest has no item." << std::endl;
                         }
-                        //this->player->setItem(chest->getItem());
-                        //const Item* playerItem = player->getItem();
-                        std::cout << chest->getGold() << std::endl;
+                    }
+                    else {
+                        std::cout << "Chest has no item." << std::endl;
                     }
                 }
                 else {
@@ -136,7 +134,7 @@ void Game::updateInput() {
         this->player->setAnimationFacing(1);
         this->player->move(-1.f, 0.f);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         this->player->setAnimationFacing(2);
         this->player->move(1.f, 0.f);
     }
