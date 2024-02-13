@@ -7,6 +7,7 @@
 Enemy::Enemy() {
     this->initVariables();
     this->initSprite();
+    this->initShape();
 }
 
 Enemy::~Enemy() {
@@ -22,9 +23,22 @@ void Enemy::initVariables() {
 }
 
 void Enemy::initSprite() {
-    this->sprite.setSize(sf::Vector2f(100, 100));
-    sprite.setFillColor(sf::Color::Red);
+    this->texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/Skeleton/Idle.png");
+    //spriteSize.x = 10;
+    //spriteSize.y = 10;
+
+    sprite.scale(.8f, .8f);
+    sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
+
+    sprite.setTexture(texture);
 }
+
+
+void Enemy::initShape() {
+    this->sprite.setTexture(this->texture);
+    this->sprite.scale(2.5f, 2.5f);
+}
+
 
 void Enemy::setPosition(const float x, const float y) {
     this->sprite.setPosition(x,y);

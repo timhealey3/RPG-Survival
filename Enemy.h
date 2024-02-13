@@ -7,7 +7,9 @@
 
 class Enemy {
 private:
-    sf::RectangleShape sprite;
+    sf::Sprite sprite;
+    sf::Texture texture;
+    sf::Vector2u spriteSize;
     int gold;
     int hp;
     int hpMax;
@@ -16,6 +18,7 @@ private:
     float attackCooldown;
     void initVariables();
     void initSprite();
+    void initShape();
 public:
     Enemy();
     virtual ~Enemy();

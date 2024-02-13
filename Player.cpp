@@ -20,6 +20,7 @@ Player::Player() : hp(), hpMax(), gold(), movementSpeed() {
 }
 
 Player::~Player() {
+    delete item;
 }
 
 void Player::move(const float dirX, const float dirY) {
