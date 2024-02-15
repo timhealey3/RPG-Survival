@@ -5,6 +5,7 @@
 Game::Game() {
     this->initWindow();
     this->initPlayer();
+    this->initGui();
     this->initVariables();
     this->spawnChest();
     player_view.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
@@ -13,17 +14,18 @@ Game::Game() {
     const int level[] =
             {
                     3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+                    3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     3, 0, 0, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    3, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 1, 1, 0, 0, 3,
-                    3, 0, 0, 0, 3, 3, 3, 0, 0, 0, 1, 1, 0, 2, 0, 3,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 3,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 0,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 0,
+                    3, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3,
+                    3, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0,
+                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0,
             };
     // TODO come up with map and player position
     if (!map->load("/Users/timhealey/CLionProjects/rpgGame/Tileset/tileSet.png", sf::Vector2u(32, 32), level, 16, 8, 4.f))
         std::cout << "map did NOT load";
+
 }
 
 Game::~Game() {
@@ -56,6 +58,7 @@ void Game::run() {
     while(this->window->isOpen()) {
         this->updatePollEvents();
         this->update();
+        this->updateGUI();
         this->render();
     }
 }
@@ -203,6 +206,9 @@ void Game::render() {
     for (auto& enemy : enemies) {
         enemy->render(*this->window);
     }
+    this->renderGUI();
+    //if (this->player->getGold() <= 0)
+    //    this->window->draw(this->gameOverText);
     this->window->display();
 }
 
@@ -222,4 +228,51 @@ sf::Vector2f Game::normalize(sf::Vector2<float> source) {
 
 float Game::calculateDistance(const sf::Vector2f& pos1, const sf::Vector2f& pos2) {
     return std::sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y));
+}
+
+void Game::initGui() {
+    if (!this->font.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/IMMORTAL.ttf"))
+        std::cout << "ERROR::GAME::FAILED LOAD FONT" << "\n";
+
+    // Set up point text
+    this->pointText.setFont(this->font);
+    this->pointText.setCharacterSize(24);
+    this->pointText.setFillColor(sf::Color::White);
+
+    this->itemText.setFont(this->font);
+    this->itemText.setCharacterSize(24);
+    this->itemText.setFillColor(sf::Color::White);
+    // Set up game over text
+    this->gameOverText.setFont(this->font);
+    this->gameOverText.setCharacterSize(50);
+    this->gameOverText.setFillColor(sf::Color::Red);
+    this->gameOverText.setString("Game Over!");
+
+    // Position game over text at the center of the screen
+    sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
+    this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
+
+}
+
+
+void Game::renderGUI()
+{
+    sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
+    this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
+    this->window->draw(this->pointText);
+    this->window->draw(this->itemText);
+    this->window->draw(this->playerHpBarBack);
+    this->window->draw(this->playerHpBar);
+}
+
+void Game::updateGUI()
+{
+    std::stringstream ss;
+    std::stringstream itemStream;
+    ss << "Gold: " << this->player->getGold() << "\n";
+    ss << "Item: " << this->player->getItem()->getItemName();
+    this->pointText.setString(ss.str());
+    this->itemText.setString(itemStream.str());
+    //float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+    //this->playerHpBar.setSize(sf::Vector2f(300.f* hpPercent, this->playerHpBar.getSize().y));
 }

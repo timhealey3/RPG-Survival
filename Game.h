@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Tiles.h"
 #include "chests.h"
+#include <sstream>
 
 class Game {
 private:
@@ -13,6 +14,7 @@ private:
     Player* player;
     Enemy* enemy;
     TileMap* map;
+    TileMap* background;
     Chest* chest;
     Item* item;
     std::vector<Enemy*> enemies;
@@ -23,6 +25,13 @@ private:
     float spawnTimer;
     float spawnTimerMax;
     float attackDelay;
+    sf::RectangleShape playerHpBar;
+    sf::RectangleShape playerHpBarBack;
+    sf::Font font;
+    sf::Text itemText;
+    sf::Text pointText;
+    sf::Text gameOverText;
+    void initGui();
     void initWindow();
     void initPlayer();
     void initVariables();
@@ -37,9 +46,12 @@ public:
     void updatePollEvents();
     void updateInput();
     void update();
+    void updateGUI();
     sf::Vector2f normalize(sf::Vector2<float> source);
 
     float calculateDistance(const sf::Vector2f &vector2, const sf::Vector2f &vector21);
+
+    void renderGUI();
 };
 
 
