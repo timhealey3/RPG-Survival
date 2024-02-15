@@ -26,7 +26,9 @@ public:
     void setHPDmg(int hpDmg);
     const int getHp() const;
     const int getGold() const;
+    float getMovementSpeed() const;
     const sf::FloatRect getPos() const;
+    const sf::Vector2f& getLocalPos() const;
     void moveEn(float dirX, float dirY);
     void render(sf::RenderTarget& target);
 };

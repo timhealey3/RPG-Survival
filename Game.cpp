@@ -1,6 +1,6 @@
 #include "Game.h"
 #include <iostream>
-
+#include <cmath>
 
 Game::Game() {
     this->initWindow();
@@ -34,7 +34,6 @@ Game::~Game() {
         delete chest;
     }
     for (auto& enemy : enemies) {
-        // TODO implement A* to move enemy
         delete enemy;
     }
 }
@@ -113,11 +112,21 @@ void Game::updateInput() {
             if (this->player->getSwordBounds().intersects((*it)->getPos())) {
                 std::cout << "before HP " << (*it)->getHp() << std::endl;
                 (*it)->setHPDmg(this->player->getItem()->getDamage());
+
+                std::cout << this->player->getItem()->getDurability() << std::endl;
+
+                this->player->getItem()->setDurability(1);
+
+                if (this->player->getItem()->getDurability() <= 0) {
+                    std::cout << "Your Item Broke!" << std::endl;
+                    this->player->brokeItem();
+                }
                 std::cout << "attack did " << this->player->getItem()->getDamage() << "\n";
                 // if killed enemy
                 if ((*it)->getHp() <= 0) {
                     this->player->addGold((*it)->getGold());
                     it = enemies.erase(it);
+                    break;
                 } else {
                     ++it;
                 }
@@ -166,8 +175,13 @@ void Game::spawnEnemy() {
 
 void Game::moveEnemy() {
     for (auto& enemy : enemies) {
-        // TODO implement A* to move enemy
-        enemy->moveEn(0.f, -.5f);
+        sf::Vector2f direction = normalize(player->getPos() - enemy->getLocalPos());
+        float distance = calculateDistance(player->getPos(), enemy->getLocalPos());
+        float distanceThreshold = 56.0f;
+        if (distance > distanceThreshold) {
+            float adjustedSpeed = std::min(enemy->getMovementSpeed(), distance);
+            enemy->moveEn(direction.x * adjustedSpeed, direction.y * adjustedSpeed);
+        }
     }
 }
 
@@ -196,4 +210,16 @@ void Game::spawnChest() {
     for (int j = 0; j < 5; j++) {
         this->chests.push_back(new Chest());
     }
+}
+
+sf::Vector2f Game::normalize(sf::Vector2<float> source) {
+    float length = sqrt((source.x * source.x) + (source.y * source.y));
+    if (length != 0)
+        return {source.x / length, source.y / length};
+    else
+        return source;
+}
+
+float Game::calculateDistance(const sf::Vector2f& pos1, const sf::Vector2f& pos2) {
+    return std::sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.y - pos2.y) * (pos1.y - pos2.y));
 }

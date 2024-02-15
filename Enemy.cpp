@@ -19,26 +19,26 @@ void Enemy::initVariables() {
     this->hpMax = 10;
     this->hp = hpMax;
     this->attackCooldown = 1.f;
-    this->movementSpeed = 1.2;
+    this->movementSpeed = 0.8;
 }
 
 void Enemy::initSprite() {
-    this->texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/Skeleton/Idle.png");
-
-    // Set the sprite size based on the actual dimensions of the image
-    spriteSize.x = 110;
-    spriteSize.y = 100;
-
+    texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/char_purple_1.png");
     sprite.setTexture(texture);
+
+    // Set the sprite size
+    spriteSize.x = 56;
+    spriteSize.y = 56;
+
     sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
-    sprite.scale(0.8f, 0.8f);  // Adjust the scaling factor if needed
+    sprite.scale(2.5f, 2.5f);
+    sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
 }
 
 
 
 void Enemy::initShape() {
     this->sprite.setTexture(this->texture);
-    this->sprite.scale(2.5f, 2.5f);
 }
 
 
@@ -54,7 +54,6 @@ void Enemy::moveEn(float dirX, float dirY) {
     this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
-
 const sf::FloatRect Enemy::getPos() const {
     return this->sprite.getGlobalBounds();
 }
@@ -69,4 +68,12 @@ void Enemy::setHPDmg(int hpDmg) {
 
 const int Enemy::getGold() const {
     return this->gold;
+}
+
+const sf::Vector2f &Enemy::getLocalPos() const {
+    return this->sprite.getPosition();
+}
+
+float Enemy::getMovementSpeed() const {
+    return this->movementSpeed;
 }

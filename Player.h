@@ -42,6 +42,7 @@ public:
     const sf::Vector2f& getPos() const;
     void updateCooldown();
     int getDamage();
+    void brokeItem();
     void setPosition(float x, float y);
     void setAnimationFacing(int action);
     void addGold(int addGold);

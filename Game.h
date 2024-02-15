@@ -37,6 +37,9 @@ public:
     void updatePollEvents();
     void updateInput();
     void update();
+    sf::Vector2f normalize(sf::Vector2<float> source);
+
+    float calculateDistance(const sf::Vector2f &vector2, const sf::Vector2f &vector21);
 };
 
 

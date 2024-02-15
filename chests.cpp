@@ -62,17 +62,17 @@ const int Chest::getGold() const {
 
 void Chest::setItem() {
     if (this->tier == 1) {
-        item = new Item("Sword", 2);
+        item = new Item("Sword", 2, 25);
     }
     else if (this->tier == 2) {
-        item = new Item("Gladius", 4);
+        item = new Item("Gladius", 4, 15);
     }
     else if (this->tier == 3) {
-        item = new Item("Sword of Neptune", 10);
+        item = new Item("Sword of Neptune", 10, 60);
     }
     // should never hit
     else {
-        item = new Item("Wood Sword", 1);
+        item = new Item("Wood Sword", 1, 25);
     }
 }
 

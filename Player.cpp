@@ -16,7 +16,7 @@ void Player::initVariables() {
 Player::Player() : hp(), hpMax(), gold(), movementSpeed() {
     this->initVariables();
     this->initSprite();
-    this->item = new Item("Wood Sword", 10);
+    this->item = new Item("Wood Sword", 10, 25);
 }
 
 Player::~Player() {
@@ -191,7 +191,7 @@ void Player::addGold(int addGold) {
 
 void Player::setItem(const Item* newItem) {
     delete this->item;
-    this->item = new Item(newItem->getItemName(), newItem->getDamage());
+    this->item = new Item(newItem->getItemName(), newItem->getDamage(), newItem->getDurability());
 }
 
 Item *const Player::getItem() const {
@@ -242,6 +242,11 @@ const sf::FloatRect Player::getSwordBounds() const {
     }
 
     return sf::FloatRect(swordPosition.x, swordPosition.y, swordWidth, swordHeight);
+}
+
+void Player::brokeItem() {
+    delete this->item;
+    item = new Item("Wood Sword", 1, 25);
 }
 
 
