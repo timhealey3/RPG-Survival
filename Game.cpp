@@ -1,8 +1,6 @@
 #include "Game.h"
 #include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
+
 
 Game::Game() {
     this->initWindow();
@@ -45,6 +43,7 @@ void Game::initVariables() {
     this->spawnTimerMax = 60.f;
     this->spawnTimer = 30.f;
     this->maxSpawn = 5;
+    this->attackDelay = 0.5f;
 }
 
 void Game::initPlayer()
@@ -114,7 +113,6 @@ void Game::updateInput() {
             if (this->player->getSwordBounds().intersects((*it)->getPos())) {
                 std::cout << "before HP " << (*it)->getHp() << std::endl;
                 (*it)->setHPDmg(this->player->getItem()->getDamage());
-                std::cout << "after HP " << (*it)->getHp()  << std::endl;
                 std::cout << "attack did " << this->player->getItem()->getDamage() << "\n";
                 // if killed enemy
                 if ((*it)->getHp() <= 0) {

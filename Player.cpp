@@ -230,8 +230,8 @@ void Player::setAnimationFacing(int action) {
 }
 
 const sf::FloatRect Player::getSwordBounds() const {
-    float swordWidth = 20.0f;
-    float swordHeight = 60.0f;
+    float swordWidth = 18.0f;
+    float swordHeight = 1.0f;
 
     sf::Vector2f swordPosition;
 

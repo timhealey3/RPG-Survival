@@ -24,14 +24,16 @@ void Enemy::initVariables() {
 
 void Enemy::initSprite() {
     this->texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/Skeleton/Idle.png");
-    //spriteSize.x = 10;
-    //spriteSize.y = 10;
 
-    sprite.scale(.8f, .8f);
-    sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
+    // Set the sprite size based on the actual dimensions of the image
+    spriteSize.x = 110;
+    spriteSize.y = 100;
 
     sprite.setTexture(texture);
+    sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
+    sprite.scale(0.8f, 0.8f);  // Adjust the scaling factor if needed
 }
+
 
 
 void Enemy::initShape() {

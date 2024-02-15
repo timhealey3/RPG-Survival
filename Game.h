@@ -9,6 +9,7 @@
 
 class Game {
 private:
+    sf::Clock clock;
     Player* player;
     Enemy* enemy;
     TileMap* map;
@@ -21,6 +22,7 @@ private:
     int maxSpawn;
     float spawnTimer;
     float spawnTimerMax;
+    float attackDelay;
     void initWindow();
     void initPlayer();
     void initVariables();
