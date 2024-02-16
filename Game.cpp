@@ -78,6 +78,9 @@ void Game::update() {
     this->spawnEnemy();
     this->moveEnemy();
     this->player->update();
+    for (auto& enemy : enemies) {
+        enemy->update();
+    }
 }
 
 void Game::updateInput() {
@@ -115,7 +118,6 @@ void Game::updateInput() {
             if (this->player->getSwordBounds().intersects((*it)->getPos())) {
                 std::cout << "before HP " << (*it)->getHp() << std::endl;
                 (*it)->setHPDmg(this->player->getItem()->getDamage());
-
                 std::cout << this->player->getItem()->getDurability() << std::endl;
 
                 this->player->getItem()->setDurability(1);
@@ -185,6 +187,12 @@ void Game::moveEnemy() {
             float adjustedSpeed = std::min(enemy->getMovementSpeed(), distance);
             enemy->moveEn(direction.x * adjustedSpeed, direction.y * adjustedSpeed);
         }
+        else {
+            //this->player->setHp(enemy->getDmg());
+            if (enemy->canAttack()) {
+                this->player->setHp(1);
+            }
+        }
     }
 }
 
@@ -251,7 +259,11 @@ void Game::initGui() {
     // Position game over text at the center of the screen
     sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
     this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
-
+    this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f));
+    this->playerHpBar.setFillColor(sf::Color::Green);
+    this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+    this->playerHpBarBack = this->playerHpBar;
+    this->playerHpBarBack.setFillColor(sf::Color::Red);
 }
 
 
@@ -261,7 +273,9 @@ void Game::renderGUI()
     this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
     this->window->draw(this->pointText);
     this->window->draw(this->itemText);
+    this->playerHpBarBack.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
     this->window->draw(this->playerHpBarBack);
+    this->playerHpBar.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
     this->window->draw(this->playerHpBar);
 }
 
@@ -269,10 +283,10 @@ void Game::updateGUI()
 {
     std::stringstream ss;
     std::stringstream itemStream;
-    ss << "Gold: " << this->player->getGold() << "\n";
+    ss << "\nGold: " << this->player->getGold() << "\n";
     ss << "Item: " << this->player->getItem()->getItemName();
     this->pointText.setString(ss.str());
     this->itemText.setString(itemStream.str());
-    //float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
-    //this->playerHpBar.setSize(sf::Vector2f(300.f* hpPercent, this->playerHpBar.getSize().y));
+    float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+    this->playerHpBar.setSize(sf::Vector2f(300.f* hpPercent, this->playerHpBar.getSize().y));
 }

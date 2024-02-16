@@ -8,9 +8,9 @@ void Player::initVariables() {
     this->gold = 0;
     this->movementSpeed = 2.5f;
     this->attackCooldownMax = 15.f;
+    this->attackCooldown = this->attackCooldownMax;
     this->isIdle = true;
     this->isRight = true;
-    this->attackCooldown = this->attackCooldownMax;
 }
 
 Player::Player() : hp(), hpMax(), gold(), movementSpeed() {
@@ -69,9 +69,9 @@ void Player::update() {
 
     if (this->isAttacking) {
         if (this->isRight) {
-            if (animationClock.getElapsedTime().asSeconds() >= animationSpeed) {
+            if (animationClock.getElapsedTime().asSeconds() > animationSpeed) {
                 // Update the texture rect based on the current frame
-                sprite.setTextureRect(sf::IntRect(currentFrame * spriteSize.x, spriteSize.y, spriteSize.x, spriteSize.y));
+                sprite.setTextureRect(sf::IntRect(currentFrame * 56, 56, 56, 56));
                 sprite.setScale(2.5f, 2.5f);
                 // Increment the current frame
                 currentFrame++;
@@ -194,7 +194,7 @@ void Player::setItem(const Item* newItem) {
     this->item = new Item(newItem->getItemName(), newItem->getDamage(), newItem->getDurability());
 }
 
-Item *const Player::getItem() const {
+Item *Player::getItem() const {
     return this->item;
 }
 
@@ -229,7 +229,7 @@ void Player::setAnimationFacing(int action) {
     }
 }
 
-const sf::FloatRect Player::getSwordBounds() const {
+sf::FloatRect Player::getSwordBounds() const {
     float swordWidth = 18.0f;
     float swordHeight = 1.0f;
 
@@ -247,6 +247,18 @@ const sf::FloatRect Player::getSwordBounds() const {
 void Player::brokeItem() {
     delete this->item;
     item = new Item("Wood Sword", 1, 25);
+}
+
+int Player::getHp() const {
+    return this->hp;
+}
+
+int Player::getHpMax() const {
+    return this->hpMax;
+}
+
+void Player::setHp(int subHp) {
+    this->hp -= subHp;
 }
 
 

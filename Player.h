@@ -15,9 +15,9 @@ private:
     Item* item;
     sf::Vector2u spriteSize;
     sf::Clock animationClock;
-    float animationSpeed = 0.11f;
+    float animationSpeed = 0.13f;
     unsigned int currentFrame = 0;
-    unsigned int frameCount = 6;
+    unsigned int frameCount = 5;
     int hp;
     int hpMax;
     int gold;
@@ -48,8 +48,11 @@ public:
     void addGold(int addGold);
     void subGold(int subGold);
     void setItem(const Item* newItem);
-    Item *const getItem() const;
-    const sf::FloatRect getSwordBounds() const;
+    Item *getItem() const;
+    int getHp() const;
+    int getHpMax() const;
+    void setHp(int subHp);
+    sf::FloatRect getSwordBounds() const;
     void move(float dirX, float dirY);
     void render(sf::RenderTarget& target);
     void update();

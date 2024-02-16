@@ -22,15 +22,15 @@ void Item::setDamage(int newDamage) {
     this->damage = newDamage;
 }
 
-const std::string Item::getItemName() const {
+std::string Item::getItemName() const {
     return this->Name;
 }
 
-const int Item::getDamage() const {
+int Item::getDamage() const {
     return this->damage;
 }
 
-const int Item::getDurability() const {
+int Item::getDurability() const {
     return this->Durability;
 }
 
