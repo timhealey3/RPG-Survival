@@ -51,10 +51,9 @@ public:
     void update();
     void updateGUI();
     sf::Vector2f normalize(sf::Vector2<float> source);
-
     float calculateDistance(const sf::Vector2f &vector2, const sf::Vector2f &vector21);
-
     void renderGUI();
+    bool collisionDetect(float nextPosX, float nextPosY);
 };
 
 

@@ -23,8 +23,8 @@ Chest::~Chest() {
 }
 
 void Chest::setPosition() {
-    int x = std::rand() % 1000;
-    int y = std::rand() % 1000;
+    int x = std::rand() % 2050;
+    int y = std::rand() % 962;
     this->shape.setPosition(x,y);
 }
 

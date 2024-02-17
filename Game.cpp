@@ -51,7 +51,7 @@ void Game::initPlayer()
 {
     this->player = new Player();
     this->map = new TileMap();
-    this->player->setPosition(500.f, 500.f);
+    this->player->setPosition(952.5f, 412.5f);
 }
 
 void Game::run() {
@@ -146,25 +146,33 @@ void Game::updateInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         this->player->setAnimationFacing(1);
         if ((this->player->getPos().x - 1) > 0) {
-            this->player->move(-1.f, 0.f);
+            if ( !collisionDetect(this->player->getPos().x - 1, this->player->getPos().y) ) {
+                this->player->move(-1.f, 0.f);
+            }
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         this->player->setAnimationFacing(2);
         if ((this->player->getPos().x + 1) < 2050) {
-            this->player->move(1.f, 0.f);
+            if (!collisionDetect(this->player->getPos().x + 1, this->player->getPos().y)) {
+                this->player->move(1.f, 0.f);
+            }
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         this->player->setAnimationFacing(4);
         if ((this->player->getPos().y - 1) > (-50)) {
-            this->player->move(0.f, -1.f);
+            if ( !collisionDetect(this->player->getPos().x, this->player->getPos().y - 1) ) {
+                this->player->move(0.f, -1.f);
+            }
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         this->player->setAnimationFacing(4);
         if ((this->player->getPos().y - 1) < (960)) {
-            this->player->move(0.f, 1.f);
+            if ( !collisionDetect(this->player->getPos().x, this->player->getPos().y + 1)) {
+                this->player->move(0.f, 1.f);
+            }
         }
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
@@ -173,6 +181,21 @@ void Game::updateInput() {
         !sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         this->player->setAnimationFacing(0);
     }
+}
+
+bool Game::collisionDetect(float nextPosX, float nextPosY) {
+    float distanceThresholdX = 60.0f;
+    float distanceThresholdY = 60.0f;
+
+    for (auto& chest : chests) {
+        float distanceX = std::sqrt((nextPosX - chest->getPos().x) * (nextPosX - chest->getPos().x));
+        float distanceY = std::sqrt((nextPosY - chest->getPos().y) * (nextPosY - chest->getPos().y));
+        if (distanceX < distanceThresholdX && distanceY < distanceThresholdY) {
+            return true;
+        }
+    }
+
+    return false;  // No collision detected for the next position
 }
 
 void Game::spawnEnemy() {
@@ -236,7 +259,7 @@ void Game::render() {
 }
 
 void Game::spawnChest() {
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < 8; j++) {
         this->chests.push_back(new Chest());
     }
 }
