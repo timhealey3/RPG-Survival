@@ -13,11 +13,11 @@ Game::Game() {
     this->window->setView(player_view);
     const int level[] =
             {
-                    3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    3, 0, 0, 3, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    3, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3,
-                    3, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+                    0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+                    0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3,
+                    0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3,
                     0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
                     0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0,
                     0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0,
@@ -77,6 +77,7 @@ void Game::update() {
     this->updateInput();
     this->spawnEnemy();
     this->moveEnemy();
+    std::cout << "Position: " << this->player->getPos().x << " " << this->player->getPos().y << std::endl;
     this->player->update();
     for (auto& enemy : enemies) {
         enemy->update();
@@ -144,19 +145,27 @@ void Game::updateInput() {
     // move player
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         this->player->setAnimationFacing(1);
-        this->player->move(-1.f, 0.f);
+        if ((this->player->getPos().x - 1) > 0) {
+            this->player->move(-1.f, 0.f);
+        }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         this->player->setAnimationFacing(2);
-        this->player->move(1.f, 0.f);
+        if ((this->player->getPos().x + 1) < 2050) {
+            this->player->move(1.f, 0.f);
+        }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         this->player->setAnimationFacing(4);
-        this->player->move(0.f, -1.f);
+        if ((this->player->getPos().y - 1) > (-50)) {
+            this->player->move(0.f, -1.f);
+        }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         this->player->setAnimationFacing(4);
-        this->player->move(0.f, 1.f);
+        if ((this->player->getPos().y - 1) < (960)) {
+            this->player->move(0.f, 1.f);
+        }
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
         !sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
@@ -200,10 +209,16 @@ void Game::initWindow() {
     this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Stay Alive for Rome", sf::Style::Close | sf::Style::Titlebar);
     this->window->setFramerateLimit(60);
     this->window->setVerticalSyncEnabled(false);
+
+    if (!this->worldBackgroundTex.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/treees.png")) {
+        std::cout << "ERROR Loading Background" << "\n";
+    }
+    this->worldBackground.setTexture(this->worldBackgroundTex);
 }
 
 void Game::render() {
     this->window->clear();
+    this->window->draw(this->worldBackground);
     player_view.setCenter(player->getPos());
     this->window->setView(player_view);
     this->window->draw(*map);
@@ -242,7 +257,6 @@ void Game::initGui() {
     if (!this->font.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/IMMORTAL.ttf"))
         std::cout << "ERROR::GAME::FAILED LOAD FONT" << "\n";
 
-    // Set up point text
     this->pointText.setFont(this->font);
     this->pointText.setCharacterSize(24);
     this->pointText.setFillColor(sf::Color::White);
@@ -250,7 +264,11 @@ void Game::initGui() {
     this->itemText.setFont(this->font);
     this->itemText.setCharacterSize(24);
     this->itemText.setFillColor(sf::Color::White);
-    // Set up game over text
+
+    this->durabilityText.setFont(this->font);
+    this->durabilityText.setCharacterSize(24);
+    this->durabilityText.setFillColor(sf::Color::White);
+
     this->gameOverText.setFont(this->font);
     this->gameOverText.setCharacterSize(50);
     this->gameOverText.setFillColor(sf::Color::Red);
@@ -272,7 +290,6 @@ void Game::renderGUI()
     sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
     this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
     this->window->draw(this->pointText);
-    this->window->draw(this->itemText);
     this->playerHpBarBack.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
     this->window->draw(this->playerHpBarBack);
     this->playerHpBar.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
@@ -281,12 +298,13 @@ void Game::renderGUI()
 
 void Game::updateGUI()
 {
-    std::stringstream ss;
+    std::stringstream goldStream;
     std::stringstream itemStream;
-    ss << "\nGold: " << this->player->getGold() << "\n";
-    ss << "Item: " << this->player->getItem()->getItemName();
-    this->pointText.setString(ss.str());
-    this->itemText.setString(itemStream.str());
+    std::stringstream durabilityStream;
+    goldStream << "\nGold: " << this->player->getGold() << "\n";
+    goldStream << "Item: " << this->player->getItem()->getItemName() << "\n";
+    goldStream << "Durability: " << this->player->getItem()->getDurability();
+    this->pointText.setString(goldStream.str());
     float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
     this->playerHpBar.setSize(sf::Vector2f(300.f* hpPercent, this->playerHpBar.getSize().y));
 }

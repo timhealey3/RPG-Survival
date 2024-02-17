@@ -29,8 +29,11 @@ private:
     sf::RectangleShape playerHpBarBack;
     sf::Font font;
     sf::Text itemText;
+    sf::Text durabilityText;
     sf::Text pointText;
     sf::Text gameOverText;
+    sf::Sprite worldBackground;
+    sf::Texture worldBackgroundTex;
     void initGui();
     void initWindow();
     void initPlayer();

@@ -246,7 +246,7 @@ sf::FloatRect Player::getSwordBounds() const {
 
 void Player::brokeItem() {
     delete this->item;
-    item = new Item("Wood Sword", 1, 25);
+    item = new Item("Fists", 1, 100);
 }
 
 int Player::getHp() const {
