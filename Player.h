@@ -16,8 +16,11 @@ private:
     sf::Vector2u spriteSize;
     sf::Clock animationClock;
     float animationSpeed = 0.13f;
+    float deathSpeed = 0.18f;
     unsigned int currentFrame = 0;
     unsigned int frameCount = 5;
+    unsigned int frameSword = 6;
+    unsigned int frameDead = 10;
     int hp;
     int hpMax;
     int gold;

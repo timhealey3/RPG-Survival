@@ -74,7 +74,9 @@ void Game::updatePollEvents() {
 }
 
 void Game::update() {
-    this->updateInput();
+    if (this->player->getHp() != 0) {
+        this->updateInput();
+    }
     this->spawnEnemy();
     this->moveEnemy();
     //std::cout << "Position: " << this->player->getPos().x << " " << this->player->getPos().y << std::endl;
@@ -223,7 +225,7 @@ void Game::moveEnemy() {
         else {
             //this->player->setHp(enemy->getDmg());
             if (enemy->canAttack()) {
-                this->player->setHp(1);
+                this->player->setHp(10);
             }
         }
     }
@@ -254,8 +256,6 @@ void Game::render() {
         enemy->render(*this->window);
     }
     this->renderGUI();
-    //if (this->player->getGold() <= 0)
-    //    this->window->draw(this->gameOverText);
     this->window->display();
 }
 
@@ -294,7 +294,7 @@ void Game::initGui() {
     this->durabilityText.setFillColor(sf::Color::White);
 
     this->gameOverText.setFont(this->font);
-    this->gameOverText.setCharacterSize(50);
+    this->gameOverText.setCharacterSize(80);
     this->gameOverText.setFillColor(sf::Color::Red);
     this->gameOverText.setString("Game Over!");
 
@@ -311,13 +311,35 @@ void Game::initGui() {
 
 void Game::renderGUI()
 {
-    sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
-    this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
-    this->window->draw(this->pointText);
-    this->playerHpBarBack.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
-    this->window->draw(this->playerHpBarBack);
-    this->playerHpBar.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
-    this->window->draw(this->playerHpBar);
+    if (this->player->getHp() != 0) {
+        sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
+        this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
+        this->window->draw(this->pointText);
+        this->playerHpBarBack.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
+        this->window->draw(this->playerHpBarBack);
+        this->playerHpBar.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
+        this->window->draw(this->playerHpBar);
+    }
+    else {
+        gameOverText.setFillColor(sf::Color(255, 0, 0, clockGameOver));
+        // Assuming fadeComplete is defined somewhere and is greater than 0
+        if (clockGameOver < fadeComplete) {
+            sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
+            sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
+                                          this->window->getView().getCenter().y - textBounds.height / 2);
+            this->gameOverText.setPosition(textPosition);
+            this->window->draw(this->gameOverText);
+            clockGameOver++;
+        }
+        else {
+            gameOverText.setFillColor(sf::Color(255, 0, 0));
+            sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
+            sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
+                                      this->window->getView().getCenter().y - textBounds.height / 2);
+            this->gameOverText.setPosition(textPosition);
+            this->window->draw(this->gameOverText);
+        }
+    }
 }
 
 void Game::updateGUI()
