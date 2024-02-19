@@ -77,7 +77,7 @@ void Game::update() {
     this->updateInput();
     this->spawnEnemy();
     this->moveEnemy();
-    std::cout << "Position: " << this->player->getPos().x << " " << this->player->getPos().y << std::endl;
+    //std::cout << "Position: " << this->player->getPos().x << " " << this->player->getPos().y << std::endl;
     this->player->update();
     for (auto& enemy : enemies) {
         enemy->update();
@@ -146,7 +146,7 @@ void Game::updateInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         this->player->setAnimationFacing(1);
         if ((this->player->getPos().x - 1) > 0) {
-            if ( !collisionDetect(this->player->getPos().x - 1, this->player->getPos().y) ) {
+            if ( !collisionDetect(this->player->getPos().x - 1.f, this->player->getPos().y) ) {
                 this->player->move(-1.f, 0.f);
             }
         }
@@ -154,7 +154,7 @@ void Game::updateInput() {
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         this->player->setAnimationFacing(2);
         if ((this->player->getPos().x + 1) < 2050) {
-            if (!collisionDetect(this->player->getPos().x + 1, this->player->getPos().y)) {
+            if (!collisionDetect(this->player->getPos().x + 1.f, this->player->getPos().y)) {
                 this->player->move(1.f, 0.f);
             }
         }
@@ -184,18 +184,19 @@ void Game::updateInput() {
 }
 
 bool Game::collisionDetect(float nextPosX, float nextPosY) {
-    float distanceThresholdX = 60.0f;
-    float distanceThresholdY = 60.0f;
-
+    float distanceThresholdX = 56.0f;
+    float distanceThresholdY = 56.0f;
+    /*
     for (auto& chest : chests) {
         float distanceX = std::sqrt((nextPosX - chest->getPos().x) * (nextPosX - chest->getPos().x));
         float distanceY = std::sqrt((nextPosY - chest->getPos().y) * (nextPosY - chest->getPos().y));
+        std::cout << "disX: " << distanceX << std::endl;
+        std::cout << "disY: " << distanceY << std::endl;
         if (distanceX < distanceThresholdX && distanceY < distanceThresholdY) {
             return true;
         }
-    }
-
-    return false;  // No collision detected for the next position
+    } */
+    return false;
 }
 
 void Game::spawnEnemy() {
