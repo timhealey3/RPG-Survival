@@ -5,6 +5,7 @@
 Game::Game() {
     this->initWindow();
     this->initPlayer();
+    this->initMap();
     this->initGui();
     this->initVariables();
     this->spawnChest();
@@ -35,7 +36,7 @@ Game::~Game() {
     for (Chest* chest : this->chests) {
         delete chest;
     }
-    for (auto& enemy : enemies) {
+    for (auto& enemy : this->enemies) {
         delete enemy;
     }
 }
@@ -50,8 +51,12 @@ void Game::initVariables() {
 void Game::initPlayer()
 {
     this->player = new Player();
-    this->map = new TileMap();
     this->player->setPosition(952.5f, 412.5f);
+}
+
+void Game::initMap()
+{
+    this->map = new TileMap();
 }
 
 void Game::run() {
@@ -76,6 +81,11 @@ void Game::updatePollEvents() {
 void Game::update() {
     if (this->player->getHp() != 0) {
         this->updateInput();
+    }
+    else {
+        sf::Event e;
+        if (e.Event::key.code == sf::Keyboard::R)
+            this->restartGame();
     }
     this->spawnEnemy();
     this->moveEnemy();
@@ -221,6 +231,7 @@ void Game::moveEnemy() {
         if (distance > distanceThreshold) {
             float adjustedSpeed = std::min(enemy->getMovementSpeed(), distance);
             enemy->moveEn(direction.x * adjustedSpeed, direction.y * adjustedSpeed);
+            this->player->setAnimationFacing(5);
         }
         else {
             //this->player->setHp(enemy->getDmg());
@@ -298,6 +309,10 @@ void Game::initGui() {
     this->gameOverText.setFillColor(sf::Color::Red);
     this->gameOverText.setString("Game Over!");
 
+    this->restartText.setFont(this->font);
+    this->restartText.setCharacterSize(40);
+    this->restartText.setFillColor(sf::Color::Red);
+    this->restartText.setString("Press R to Play Again");
     // Position game over text at the center of the screen
     sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
     this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
@@ -322,13 +337,16 @@ void Game::renderGUI()
     }
     else {
         gameOverText.setFillColor(sf::Color(255, 0, 0, clockGameOver));
+        restartText.setFillColor(sf::Color(255, 0, 0, clockGameOver));
         // Assuming fadeComplete is defined somewhere and is greater than 0
         if (clockGameOver < fadeComplete) {
             sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
             sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
                                           this->window->getView().getCenter().y - textBounds.height / 2);
             this->gameOverText.setPosition(textPosition);
+            this->restartText.setPosition(textPosition.x + 20, textPosition.y + 100);
             this->window->draw(this->gameOverText);
+            this->window->draw(this->restartText);
             clockGameOver++;
         }
         else {
@@ -337,7 +355,9 @@ void Game::renderGUI()
             sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
                                       this->window->getView().getCenter().y - textBounds.height / 2);
             this->gameOverText.setPosition(textPosition);
+            this->restartText.setPosition(textPosition.x + 20, textPosition.y + 100);
             this->window->draw(this->gameOverText);
+            this->window->draw(this->restartText);
         }
     }
 }
@@ -353,4 +373,23 @@ void Game::updateGUI()
     this->pointText.setString(goldStream.str());
     float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
     this->playerHpBar.setSize(sf::Vector2f(300.f* hpPercent, this->playerHpBar.getSize().y));
+}
+
+void Game::restartGame() {
+    std::cout << "restartGame" << std::endl;
+    int counter = enemies.size() - 1;
+    while (counter >= 0) {
+        delete this->enemies.at(counter);
+        this->enemies.erase(enemies.begin() + counter);
+        counter--;
+    }
+    int countChest = chests.size() - 1;
+    while (countChest >= 0) {
+        delete this->chests.at(countChest);
+        this->chests.erase(chests.begin() + countChest);
+        countChest--;
+    }
+    delete this->player;
+    this->initPlayer();
+    this->spawnChest();
 }

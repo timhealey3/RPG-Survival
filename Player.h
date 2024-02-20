@@ -29,6 +29,7 @@ private:
     bool isLeft;
     bool isRight;
     bool isIdle;
+    bool isTakingDmg;
     int damage;
     float attackCooldown;
     float attackCooldownMax;

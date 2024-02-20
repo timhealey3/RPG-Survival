@@ -34,6 +34,7 @@ private:
     sf::Text durabilityText;
     sf::Text pointText;
     sf::Text gameOverText;
+    sf::Text restartText;
     sf::Sprite worldBackground;
     sf::Texture worldBackgroundTex;
     void initGui();
@@ -43,6 +44,7 @@ private:
 public:
     Game();
     virtual ~Game();
+    void restartGame();
     void run();
     void render();
     void spawnChest();
@@ -56,6 +58,8 @@ public:
     float calculateDistance(const sf::Vector2f &vector2, const sf::Vector2f &vector21);
     void renderGUI();
     bool collisionDetect(float nextPosX, float nextPosY);
+
+    void initMap();
 };
 
 

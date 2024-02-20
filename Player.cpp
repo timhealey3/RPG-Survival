@@ -20,7 +20,9 @@ Player::Player() : hp(), hpMax(), gold(), movementSpeed() {
 }
 
 Player::~Player() {
-    delete item;
+    if (item) {
+        delete item;
+    }
 }
 
 void Player::move(const float dirX, const float dirY) {
@@ -266,6 +268,9 @@ void Player::setAnimationFacing(int action) {
     if (action == 4) {
         this->isWalking = true;
         this->isIdle = false;
+    }
+    if (action == 5) {
+       this->isTakingDmg = true;
     }
 }
 

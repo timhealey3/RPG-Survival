@@ -19,7 +19,9 @@ Chest::Chest() {
 }
 
 Chest::~Chest() {
-    delete item;
+    if (item) {
+        delete item;
+    }
 }
 
 void Chest::setPosition() {
