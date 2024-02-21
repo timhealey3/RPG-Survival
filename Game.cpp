@@ -93,13 +93,17 @@ void Game::update() {
         if (e.Event::key.code == sf::Keyboard::R)
             this->restartGame();
     }
-    this->spawnEnemy();
+    if (!this->level->checkComplete()) {
+        this->spawnEnemy();
+    }
+    else {
+        this->level->increaseLevel(1);
+        this->level->setValues();
+    }
     this->moveEnemy();
     this->player->update();
-    if (!this->level->checkComplete(static_cast<int>(enemies.size()))) {
-        for (auto& enemy : enemies) {
-            enemy->update();
-        }
+    for (auto& enemy : enemies) {
+        enemy->update();
     }
 }
 

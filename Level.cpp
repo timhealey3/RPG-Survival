@@ -6,6 +6,7 @@
 
 Level::Level() {
     initVariables();
+    setValues();
 }
 
 Level::~Level() {
@@ -13,10 +14,10 @@ Level::~Level() {
 }
 
 void Level::initVariables() {
-    this->levelNum = 0;
+    this->levelNum = 1;
 }
 
-int Level::getLevel() {
+int Level::getLevel() const {
     return levelNum;
 }
 
@@ -31,18 +32,29 @@ void Level::increaseLevel(int increaseAmount) {
     this->levelNum += increaseAmount;
 }
 
-bool Level::checkComplete(int alive) {
+bool Level::getSpawnedLimit() const {
+    if (this->spawnedNum == this->spawnedMax) {
+        return true;
+    }
+    return false;
+};
+
+bool Level::checkComplete() const {
     // certain enemies spawned
     // if x amount spawned
     // 0 enemies are alive
     if (spawnedNum >= spawnedMax) {
-        if (alive == 0) {
             return true;
-        }
     }
     return false;
 }
 
 void Level::increaseSpawned() {
     this->spawnedNum++;
+}
+
+void Level::setValues() {
+    if (levelNum == 1) {
+        this->spawnedMax = 2;
+    }
 }

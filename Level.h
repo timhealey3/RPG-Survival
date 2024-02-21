@@ -16,13 +16,18 @@ private:
 public:
     Level();
     virtual ~Level();
-    int getLevel();
+    int getLevel() const;
     int setLevelStats();
+    void setValues();
     void increaseLevel(int increaseAmount);
     void setLevel(int newLevel);
-    bool checkComplete(int alive);
+    bool checkComplete(int alive) const;
 
     void increaseSpawned();
+
+    bool getSpawnedLimit() const;
+
+    bool checkComplete() const;
 };
 
 
