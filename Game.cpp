@@ -9,6 +9,7 @@ Game::Game() {
     this->initGui();
     this->initVariables();
     this->spawnChest();
+    this->initLevel();
     player_view.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
     player_view.setSize(this->window->getSize().x, this->window->getSize().y);
     this->window->setView(player_view);
@@ -54,6 +55,11 @@ void Game::initPlayer()
     this->player->setPosition(952.5f, 412.5f);
 }
 
+void Game::initLevel()
+{
+    this->level = new Level();
+}
+
 void Game::initMap()
 {
     this->map = new TileMap();
@@ -89,10 +95,11 @@ void Game::update() {
     }
     this->spawnEnemy();
     this->moveEnemy();
-    //std::cout << "Position: " << this->player->getPos().x << " " << this->player->getPos().y << std::endl;
     this->player->update();
-    for (auto& enemy : enemies) {
-        enemy->update();
+    if (!this->level->checkComplete(static_cast<int>(enemies.size()))) {
+        for (auto& enemy : enemies) {
+            enemy->update();
+        }
     }
 }
 
@@ -219,6 +226,7 @@ void Game::spawnEnemy() {
         this->enemy = new Enemy();
         this->enemy->setPosition(rand() % this->window->getSize().x - 50.f, rand() % this->window->getSize().y - 50.f);
         this->enemies.push_back(enemy);
+        this->level->increaseSpawned();
         this->spawnTimer = 0.f;
     }
 }
@@ -392,4 +400,6 @@ void Game::restartGame() {
     delete this->player;
     this->initPlayer();
     this->spawnChest();
+    delete this->level;
+    this->initLevel();
 }

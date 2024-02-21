@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "Tiles.h"
 #include "chests.h"
+#include "Level.h"
 #include <sstream>
 
 class Game {
@@ -17,6 +18,7 @@ private:
     TileMap* background;
     Chest* chest;
     Item* item;
+    Level* level;
     std::vector<Enemy*> enemies;
     std::vector<Chest*> chests;
     sf::RenderWindow* window;
@@ -60,6 +62,8 @@ public:
     bool collisionDetect(float nextPosX, float nextPosY);
 
     void initMap();
+
+    void initLevel();
 };
 
 

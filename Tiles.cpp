@@ -6,7 +6,7 @@ bool TileMap::load(const std::string &tileset, sf::Vector2u tileSize, const int 
     if (!m_tileset.loadFromFile(tileset))
         return false;
 
-    // resize the vertex array to fit the level size
+    // resize the vertex array to fit the Level size
     m_vertices.setPrimitiveType(sf::Triangles);
     m_vertices.resize(width * height * 6);
 
