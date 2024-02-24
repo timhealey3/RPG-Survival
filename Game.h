@@ -37,6 +37,7 @@ private:
     sf::Text pointText;
     sf::Text gameOverText;
     sf::Text restartText;
+    sf::Text levelText;
     sf::Sprite worldBackground;
     sf::Texture worldBackgroundTex;
     void initGui();

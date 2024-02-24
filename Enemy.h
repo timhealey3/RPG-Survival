@@ -42,6 +42,10 @@ public:
     void updateCooldown();
 
     void update();
+
+    void setValues();
+
+    void setValues(int level);
 };
 
 

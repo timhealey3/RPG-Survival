@@ -25,6 +25,37 @@ void Enemy::initVariables() {
     this->attackCooldown = this->attackCooldownMax;
 }
 
+void Enemy::setValues(int level) {
+    if (level == 1) {
+        this->hp = 5;
+        this->damage = 1;
+    }
+    else if (level == 2) {
+        this->hp = 10;
+        this->damage = 10;
+    }
+    else if (level == 3) {
+        this->hp = 10;
+        this->damage = 10;
+    }
+    else if (level == 4) {
+        this->hp = 5;
+        this->damage = 5;
+    }
+    else if (level == 5) {
+        this->hp = 5;
+        this->damage = 5;
+    }
+    else if (level == 6) {
+        this->hp = 5;
+        this->damage = 5;
+    }
+    else if (level == 7) {
+        this->hp = 5;
+        this->damage = 5;
+    }
+}
+
 void Enemy::initSprite() {
     texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/char_purple_1.png");
     sprite.setTexture(texture);

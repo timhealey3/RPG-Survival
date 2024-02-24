@@ -6,10 +6,10 @@ Game::Game() {
     this->initWindow();
     this->initPlayer();
     this->initMap();
+    this->initLevel();
     this->initGui();
     this->initVariables();
     this->spawnChest();
-    this->initLevel();
     player_view.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
     player_view.setSize(this->window->getSize().x, this->window->getSize().y);
     this->window->setView(player_view);
@@ -93,13 +93,16 @@ void Game::update() {
         if (e.Event::key.code == sf::Keyboard::R)
             this->restartGame();
     }
+
     if (!this->level->checkComplete()) {
         this->spawnEnemy();
     }
-    else {
+    if (this->level->checkComplete() && enemies.empty()) {
         this->level->increaseLevel(1);
         this->level->setValues();
+        std::cout << "Level is now: " << this->level->getLevel() << std::endl;
     }
+
     this->moveEnemy();
     this->player->update();
     for (auto& enemy : enemies) {
@@ -228,6 +231,8 @@ void Game::spawnEnemy() {
     if (this->spawnTimer >= this->spawnTimerMax && enemies.size()  < maxSpawn) {
         std::cout << "Enemy Spawned\n";
         this->enemy = new Enemy();
+        std::cout << this->level->getLevel() << std::endl;
+        this->enemy->setValues(static_cast<int>(this->level->getLevel()));
         this->enemy->setPosition(rand() % this->window->getSize().x - 50.f, rand() % this->window->getSize().y - 50.f);
         this->enemies.push_back(enemy);
         this->level->increaseSpawned();
@@ -246,9 +251,8 @@ void Game::moveEnemy() {
             this->player->setAnimationFacing(5);
         }
         else {
-            //this->player->setHp(enemy->getDmg());
             if (enemy->canAttack()) {
-                this->player->setHp(10);
+                this->player->setHp(this->enemy->getDmg());
             }
         }
     }
@@ -325,6 +329,12 @@ void Game::initGui() {
     this->restartText.setCharacterSize(40);
     this->restartText.setFillColor(sf::Color::Red);
     this->restartText.setString("Press R to Play Again");
+
+    this->levelText.setFont(this->font);
+    this->levelText.setCharacterSize(80);
+    this->levelText.setFillColor(sf::Color::Red);
+    std::string levelString = "Level: " + std::to_string(this->level->getLevel());
+    this->levelText.setString(levelString);
     // Position game over text at the center of the screen
     sf::Vector2f viewTopLeft = this->window->getView().getCenter() - this->window->getView().getSize() / 2.f;
     this->pointText.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
@@ -333,6 +343,7 @@ void Game::initGui() {
     this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
     this->playerHpBarBack = this->playerHpBar;
     this->playerHpBarBack.setFillColor(sf::Color::Red);
+
 }
 
 
@@ -346,6 +357,12 @@ void Game::renderGUI()
         this->window->draw(this->playerHpBarBack);
         this->playerHpBar.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
         this->window->draw(this->playerHpBar);
+
+        sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
+        sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
+                                  this->window->getView().getCenter().y - textBounds.height / 2);
+        this->levelText.setPosition(textPosition.x + 80, textPosition.y - 100);
+        this->window->draw(this->levelText);
     }
     else {
         gameOverText.setFillColor(sf::Color(255, 0, 0, clockGameOver));
@@ -381,7 +398,8 @@ void Game::updateGUI()
     std::stringstream durabilityStream;
     goldStream << "\nGold: " << this->player->getGold() << "\n";
     goldStream << "Item: " << this->player->getItem()->getItemName() << "\n";
-    goldStream << "Durability: " << this->player->getItem()->getDurability();
+    goldStream << "Durability: " << this->player->getItem()->getDurability() << "\n";
+    goldStream << "Level: " << this->level->getLevel();
     this->pointText.setString(goldStream.str());
     float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
     this->playerHpBar.setSize(sf::Vector2f(300.f* hpPercent, this->playerHpBar.getSize().y));

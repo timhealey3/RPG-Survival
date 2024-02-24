@@ -55,6 +55,24 @@ void Level::increaseSpawned() {
 
 void Level::setValues() {
     if (levelNum == 1) {
-        this->spawnedMax = 2;
+        this->spawnedMax = 10;
+    }
+    if (levelNum == 2) {
+        this->spawnedMax = 20;
+    }
+    if (levelNum == 3) {
+        this->spawnedMax = 30;
+    }
+    if (levelNum == 4) {
+        this->spawnedMax = 40;
+    }
+    if (levelNum == 5) {
+        this->spawnedMax = 50;
+    }
+    if (levelNum == 6) {
+        this->spawnedMax = 60;
+    }
+    if (levelNum == 7) {
+        this->spawnedMax = 70;
     }
 }
