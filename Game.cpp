@@ -357,12 +357,25 @@ void Game::renderGUI()
         this->window->draw(this->playerHpBarBack);
         this->playerHpBar.setPosition(viewTopLeft.x + 10.f, viewTopLeft.y + 10.f);
         this->window->draw(this->playerHpBar);
+        if (clockGameLevel < fadeCompleteLevel) {
+            levelText.setFillColor(sf::Color(255, 0, 0, clockGameLevel));
+            sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
+            sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
+                                      this->window->getView().getCenter().y - textBounds.height / 2);
+            this->levelText.setPosition(textPosition.x + 80, textPosition.y - 100);
+            this->window->draw(this->levelText);
+            clockGameLevel++;
+        } else if (clockGameLevel >= fadeCompleteLevel) {
+            clockGameLevel--;
+            levelText.setFillColor(sf::Color(255, 0, 0, clockGameLevel));
+            sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
+            sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
+                                      this->window->getView().getCenter().y - textBounds.height / 2);
+            this->levelText.setPosition(textPosition.x + 80, textPosition.y - 100);
+            this->window->draw(this->levelText);
+        }
 
-        sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
-        sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
-                                  this->window->getView().getCenter().y - textBounds.height / 2);
-        this->levelText.setPosition(textPosition.x + 80, textPosition.y - 100);
-        this->window->draw(this->levelText);
+
     }
     else {
         gameOverText.setFillColor(sf::Color(255, 0, 0, clockGameOver));

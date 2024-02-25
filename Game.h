@@ -25,6 +25,8 @@ private:
     sf::View player_view;
     int maxSpawn;
     int clockGameOver = 0;
+    int clockGameLevel = 0;
+    int fadeCompleteLevel = 255;
     int fadeComplete = 255;
     float spawnTimer;
     float spawnTimerMax;
