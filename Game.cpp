@@ -99,8 +99,9 @@ void Game::update() {
     }
     if (this->level->checkComplete() && enemies.empty()) {
         this->level->increaseLevel(1);
+        clockGameLevelOut = 254;
+        clockGameLevel = 0;
         this->level->setValues();
-        std::cout << "Level is now: " << this->level->getLevel() << std::endl;
     }
 
     this->moveEnemy();
@@ -365,16 +366,18 @@ void Game::renderGUI()
             this->levelText.setPosition(textPosition.x + 80, textPosition.y - 100);
             this->window->draw(this->levelText);
             clockGameLevel++;
-        } else if (clockGameLevel >= fadeCompleteLevel) {
-            clockGameLevel--;
-            levelText.setFillColor(sf::Color(255, 0, 0, clockGameLevel));
+        } else if (clockGameLevelOut < fadeCompleteLevel) {
+            clockGameLevelOut--;
+            levelText.setFillColor(sf::Color(255, 0, 0, clockGameLevelOut));
             sf::FloatRect textBounds = this->gameOverText.getLocalBounds();
             sf::Vector2f textPosition(this->window->getView().getCenter().x - textBounds.width / 2,
                                       this->window->getView().getCenter().y - textBounds.height / 2);
             this->levelText.setPosition(textPosition.x + 80, textPosition.y - 100);
             this->window->draw(this->levelText);
+            if (clockGameLevelOut == 0) {clockGameLevelOut = 256;}
+        } else {
+            levelText.setFillColor(sf::Color(0, 0, 0, 0));
         }
-
 
     }
     else {
@@ -409,6 +412,9 @@ void Game::updateGUI()
     std::stringstream goldStream;
     std::stringstream itemStream;
     std::stringstream durabilityStream;
+    int levelCheck = this->level->getLevel();
+    std::string levelString = "Level: " + std::to_string(levelCheck);
+    this->levelText.setString(levelString);
     goldStream << "\nGold: " << this->player->getGold() << "\n";
     goldStream << "Item: " << this->player->getItem()->getItemName() << "\n";
     goldStream << "Durability: " << this->player->getItem()->getDurability() << "\n";

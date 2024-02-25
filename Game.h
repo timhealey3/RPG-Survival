@@ -26,6 +26,7 @@ private:
     int maxSpawn;
     int clockGameOver = 0;
     int clockGameLevel = 0;
+    int clockGameLevelOut = 254;
     int fadeCompleteLevel = 255;
     int fadeComplete = 255;
     float spawnTimer;
