@@ -4,7 +4,7 @@
 
 Software: C++ && SFML
 
-Graphics:
+Graphics: 2D Sprites
 
 Sound Design:
 
@@ -14,11 +14,11 @@ Plot: Julius Ceasar invaded Britain with his Roman legion. You are one of his lo
 
 Items: Sword, Potions
 
-Chests: Store Items randomly around the map
+Chests: Store Items randomly around the map with stats that are equal to the chest level
 
 Abilities: Lightning bolt from Jupiter, Water wave from Neptune, Fury from Mars
 
-Stats: Sword has damage and durability
+Stats: Sword has damage and durability. breaks at zero durability
 
 Player: Sword Attack, Health, Abilities, Movement, Equip Items, Use Items, Open Chests
 
