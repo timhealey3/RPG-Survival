@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 
+// initialize game functions
 Game::Game() {
     this->initWindow();
     this->initPlayer();
@@ -34,11 +35,17 @@ Game::~Game() {
     delete this->window;
     delete this->player;
     delete this->map;
-    for (Chest* chest : this->chests) {
-        delete chest;
+    int counter = enemies.size() - 1;
+    while (counter >= 0) {
+        delete this->enemies.at(counter);
+        this->enemies.erase(enemies.begin() + counter);
+        counter--;
     }
-    for (auto& enemy : this->enemies) {
-        delete enemy;
+    int countChest = chests.size() - 1;
+    while (countChest >= 0) {
+        delete this->chests.at(countChest);
+        this->chests.erase(chests.begin() + countChest);
+        countChest--;
     }
 }
 
