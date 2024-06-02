@@ -24,6 +24,8 @@ private:
     int hp;
     int hpMax;
     int gold;
+    int tileX;
+    int tileY;
     bool isWalking;
     bool isAttacking;
     bool isLeft;
@@ -55,11 +57,20 @@ public:
     Item *getItem() const;
     int getHp() const;
     int getHpMax() const;
+    int getTileX();
+    int getTileY();
+    void setTileX(int change);
+    void setTileY(int change);
     void setHp(int subHp);
     sf::FloatRect getSwordBounds() const;
     void move(float dirX, float dirY);
     void render(sf::RenderTarget& target);
     void update();
+
+    void attackAnimation();
+
+    bool getAttacking();
+
 };
 
 

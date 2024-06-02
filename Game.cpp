@@ -2,8 +2,8 @@
 #include <iostream>
 #include <cmath>
 
-// initialize game functions
 Game::Game() {
+    // init functions
     this->initWindow();
     this->initPlayer();
     this->initMap();
@@ -11,41 +11,48 @@ Game::Game() {
     this->initGui();
     this->initVariables();
     this->spawnChest();
+    // set camera to center of player
     player_view.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
     player_view.setSize(this->window->getSize().x, this->window->getSize().y);
     this->window->setView(player_view);
+    // create level map
+//    const int level[] =
+//            {
+//                    0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//                    0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+//                    0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3,
+//                    0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+//                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
+//                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0,
+//                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0,
+//            };
     const int level[] =
             {
-                    0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3,
-                    0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0,
-                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0,
+                    0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+                    0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+                    0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
             };
-    // TODO come up with map and player position
-    if (!map->load("/Users/timhealey/CLionProjects/rpgGame/Tileset/tileSet.png", sf::Vector2u(32, 32), level, 16, 8, 4.f))
-        std::cout << "map did NOT load";
 
+    // create the tilemap from the level definition
+    if (!mapMap->load("/Users/timhealey/CLionProjects/rpgGame/Tileset/tileSet.png", sf::Vector2u(32, 32), level, 16, 8))
+        std::cout << "ERROR: MAP : did not load" << std::endl;
 }
 
 Game::~Game() {
     delete this->window;
     delete this->player;
-    delete this->map;
-    int counter = enemies.size() - 1;
-    while (counter >= 0) {
-        delete this->enemies.at(counter);
-        this->enemies.erase(enemies.begin() + counter);
-        counter--;
+    delete this->mapMap;
+    for (Chest* chest : this->chests) {
+        delete chest;
     }
-    int countChest = chests.size() - 1;
-    while (countChest >= 0) {
-        delete this->chests.at(countChest);
-        this->chests.erase(chests.begin() + countChest);
-        countChest--;
+    for (auto& enemy : this->enemies) {
+        delete enemy;
     }
 }
 
@@ -59,7 +66,7 @@ void Game::initVariables() {
 void Game::initPlayer()
 {
     this->player = new Player();
-    this->player->setPosition(952.5f, 412.5f);
+    this->player->setPosition(player->getTileX()*32, player->getTileY()*32);
 }
 
 void Game::initLevel()
@@ -69,7 +76,8 @@ void Game::initLevel()
 
 void Game::initMap()
 {
-    this->map = new TileMap();
+    this->mapMap = new TileMap();
+    std::cout << "TODO" << std::endl;
 }
 
 void Game::run() {
@@ -101,9 +109,10 @@ void Game::update() {
             this->restartGame();
     }
 
-    if (!this->level->checkComplete()) {
-        this->spawnEnemy();
-    }
+    //if (!this->level->checkComplete()) {
+        //this->spawnEnemy();
+    //    std::cout << "SPAWN" << std::endl;
+    //}
     if (this->level->checkComplete() && enemies.empty()) {
         this->level->increaseLevel(1);
         clockGameLevelOut = 254;
@@ -146,91 +155,94 @@ void Game::updateInput() {
         }
     }
     // attack
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->player->canAttack()) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
         this->player->setAnimationFacing(3);
-        for (auto it = enemies.begin(); it != enemies.end();) {
-            // if player is facing a direction. only on sword animation
-            if (this->player->getSwordBounds().intersects((*it)->getPos())) {
-                std::cout << "before HP " << (*it)->getHp() << std::endl;
-                (*it)->setHPDmg(this->player->getItem()->getDamage());
-                std::cout << this->player->getItem()->getDurability() << std::endl;
+        this->player->attackAnimation();
+        if (!this->player->getAttacking()) {
+            for (auto it = enemies.begin(); it != enemies.end();) {
+                // if player is facing a direction. only on sword animation
+                if (this->player->getSwordBounds().intersects((*it)->getPos())) {
+                    std::cout << "before HP " << (*it)->getHp() << std::endl;
+                    (*it)->setHPDmg(this->player->getItem()->getDamage());
+                    this->player->getItem()->setDurability(1);
 
-                this->player->getItem()->setDurability(1);
-
-                if (this->player->getItem()->getDurability() <= 0) {
-                    std::cout << "Your Item Broke!" << std::endl;
-                    this->player->brokeItem();
-                }
-                std::cout << "attack did " << this->player->getItem()->getDamage() << "\n";
-                // if killed enemy
-                if ((*it)->getHp() <= 0) {
-                    this->player->addGold((*it)->getGold());
-                    it = enemies.erase(it);
-                    break;
+                    if (this->player->getItem()->getDurability() <= 0) {
+                        std::cout << "Your Item Broke!" << std::endl;
+                        this->player->brokeItem();
+                    }
+                    std::cout << "attack did " << this->player->getItem()->getDamage() << "\n";
+                    // if killed enemy
+                    if ((*it)->getHp() <= 0) {
+                        this->player->addGold((*it)->getGold());
+                        it = enemies.erase(it);
+                        break;
+                    } else {
+                        ++it;
+                    }
                 } else {
                     ++it;
                 }
-            } else {
-                ++it;
             }
         }
     }
 
-    // move player
+    const int levelMapTwo[] =
+            {
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
+                    0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
+                    0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+                    0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
+            };
+    std::cout << this->player->getTileX() << " " << this->player->getTileY() << std::endl;
+
+// move player
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         this->player->setAnimationFacing(1);
-        if ((this->player->getPos().x - 1) > 0) {
-            if ( !collisionDetect(this->player->getPos().x - 1.f, this->player->getPos().y) ) {
-                this->player->move(-1.f, 0.f);
-            }
+        int newX = player->getTileX() - 1;
+        int newY = player->getTileY();
+        if (newX >= 0 && levelMapTwo[newX + newY * 16] == 0) {
+            this->player->move(-1.f, 0.f);
+            this->player->setTileX(-1);
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         this->player->setAnimationFacing(2);
-        if ((this->player->getPos().x + 1) < 2050) {
-            if (!collisionDetect(this->player->getPos().x + 1.f, this->player->getPos().y)) {
-                this->player->move(1.f, 0.f);
-            }
+        int newX = player->getTileX() + 1;
+        int newY = player->getTileY();
+        if (newX < 16 && levelMapTwo[newX + newY * 16] == 0) {
+            this->player->move(1.f, 0.f);
+            this->player->setTileX(1);
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         this->player->setAnimationFacing(4);
-        if ((this->player->getPos().y - 1) > (-50)) {
-            if ( !collisionDetect(this->player->getPos().x, this->player->getPos().y - 1) ) {
-                this->player->move(0.f, -1.f);
-            }
+        int newX = player->getTileX();
+        int newY = player->getTileY() - 1;
+        if (newY >= 0 && levelMapTwo[newX + newY * 16] == 0) {
+            this->player->move(0.f, -1.f);
+            this->player->setTileY(-1);
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         this->player->setAnimationFacing(4);
-        if ((this->player->getPos().y - 1) < (960)) {
-            if ( !collisionDetect(this->player->getPos().x, this->player->getPos().y + 1)) {
-                this->player->move(0.f, 1.f);
-            }
+        int newX = player->getTileX();
+        int newY = player->getTileY() + 1;
+        if (newY < 8 && levelMapTwo[newX + newY * 16] == 0) {
+            this->player->move(0.f, 1.f);
+            this->player->setTileY(1);
         }
     }
+
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::A) &&
         !sf::Keyboard::isKeyPressed(sf::Keyboard::D) &&
         !sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
         !sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         this->player->setAnimationFacing(0);
     }
-}
-
-bool Game::collisionDetect(float nextPosX, float nextPosY) {
-    float distanceThresholdX = 56.0f;
-    float distanceThresholdY = 56.0f;
-    /*
-    for (auto& chest : chests) {
-        float distanceX = std::sqrt((nextPosX - chest->getPos().x) * (nextPosX - chest->getPos().x));
-        float distanceY = std::sqrt((nextPosY - chest->getPos().y) * (nextPosY - chest->getPos().y));
-        std::cout << "disX: " << distanceX << std::endl;
-        std::cout << "disY: " << distanceY << std::endl;
-        if (distanceX < distanceThresholdX && distanceY < distanceThresholdY) {
-            return true;
-        }
-    } */
-    return false;
 }
 
 void Game::spawnEnemy() {
@@ -270,11 +282,6 @@ void Game::initWindow() {
     this->window = new sf::RenderWindow(sf::VideoMode(800, 600), "Stay Alive for Rome", sf::Style::Close | sf::Style::Titlebar);
     this->window->setFramerateLimit(60);
     this->window->setVerticalSyncEnabled(false);
-
-    if (!this->worldBackgroundTex.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/treees.png")) {
-        std::cout << "ERROR Loading Background" << "\n";
-    }
-    this->worldBackground.setTexture(this->worldBackgroundTex);
 }
 
 void Game::render() {
@@ -282,7 +289,7 @@ void Game::render() {
     this->window->draw(this->worldBackground);
     player_view.setCenter(player->getPos());
     this->window->setView(player_view);
-    this->window->draw(*map);
+    this->window->draw(*mapMap);
     for (auto& chest : chests) {
         chest->render(*this->window);
     }

@@ -14,7 +14,7 @@ private:
     sf::Clock clock;
     Player* player;
     Enemy* enemy;
-    TileMap* map;
+    TileMap* mapMap;
     TileMap* background;
     Chest* chest;
     Item* item;
