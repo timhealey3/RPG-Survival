@@ -15,14 +15,15 @@ private:
     Player* player;
     Enemy* enemy;
     TileMap* mapMap;
-    TileMap* background;
+    TileMap* backgroundMap;
     Chest* chest;
     Item* item;
     Level* level;
     std::vector<Enemy*> enemies;
     std::vector<Chest*> chests;
     sf::RenderWindow* window;
-    sf::View player_view;
+    sf::View gameView;
+    sf::View guiView;
     int maxSpawn;
     int clockGameOver = 0;
     int clockGameLevel = 0;
@@ -68,6 +69,8 @@ public:
     void initMap();
 
     void initLevel();
+
+    int movementTimer;
 };
 
 

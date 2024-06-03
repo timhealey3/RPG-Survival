@@ -6,8 +6,6 @@ void Player::initVariables() {
     this->hpMax = 100 ;
     this->hp = this->hpMax;
     this->gold = 0;
-    //this->movementSpeed = 2.5f;
-    this->movementSpeed = 1.0f;
     this->attackCooldownMax = 15.f;
     this->attackCooldown = this->attackCooldownMax;
     this->isIdle = true;
@@ -17,7 +15,7 @@ void Player::initVariables() {
     this->tileY = 1;
 }
 
-Player::Player() : hp(), hpMax(), gold(), movementSpeed() {
+Player::Player() : hp(), hpMax(), gold() {
     this->initVariables();
     this->initSprite();
     this->item = new Item("Wood Sword", 10, 25);
@@ -31,7 +29,6 @@ Player::~Player() {
 
 void Player::move(const float dirX, const float dirY) {
     sf::Vector2f currentPosition = this->sprite.getPosition();
-    //this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
 }
 
 void Player::initSprite() {
@@ -43,7 +40,7 @@ void Player::initSprite() {
     spriteSize.y = 56;
 
     sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
-    //sprite.scale(2.5f, 2.5f);
+
     float scaleX = 32.0f / spriteSize.x;
     float scaleY = 32.0f / spriteSize.y;
 
@@ -101,11 +98,11 @@ void Player::addGold(int addGold) {
 void Player::attackAnimation() {
     // Increment the current frames
     this->isAttacking = true;
-    sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
+    sprite.setOrigin(spriteSize.x / 16.f, spriteSize.y / 16.f);
+
     if (animationClock.getElapsedTime().asSeconds() > animationSpeed) {
         // Update the texture rect based on the current frame
         sprite.setTextureRect(sf::IntRect(currentFrame * 56, 56, 56, 56));
-        sprite.setScale(2.5f, 2.5f);
         // Increment the current frame
         currentFrame++;
         // Wrap the animation loop

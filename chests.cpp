@@ -32,7 +32,6 @@ void Chest::setPosition() {
 
 void Chest::initShape() {
     this->shape.setTexture(this->texture);
-    this->shape.scale(2.5f, 2.5f);
 }
 
 void Chest::initTexture() {

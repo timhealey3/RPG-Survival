@@ -13,6 +13,8 @@ private:
     sf::Texture tileset;
     sf::Texture m_tileset;
     const int* tiles;
+    int tileX;
+    int tileY;
     unsigned int height;
     unsigned int width;
     float scale;

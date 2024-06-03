@@ -4,6 +4,7 @@
 
 Game::Game() {
     // init functions
+    this->movementTimer = 0;
     this->initWindow();
     this->initPlayer();
     this->initMap();
@@ -12,30 +13,25 @@ Game::Game() {
     this->initVariables();
     this->spawnChest();
     // set camera to center of player
-    player_view.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
-    player_view.setSize(this->window->getSize().x, this->window->getSize().y);
-    this->window->setView(player_view);
+    gameView.setSize(this->window->getSize().x, this->window->getSize().y);
+    gameView.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
+
+    float zoomFactor = 4.0f;
+    gameView.setSize(this->window->getSize().x / zoomFactor, this->window->getSize().y / zoomFactor);
+
+    // Set up the GUI view (default size)
+    guiView.setSize(this->window->getSize().x, this->window->getSize().y);
+    guiView.setCenter(this->window->getSize().x / 2, this->window->getSize().y / 2);
     // create level map
-//    const int level[] =
-//            {
-//                    0, 0, 0, 0 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//                    0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-//                    0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 3,
-//                    0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-//                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-//                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0,
-//                    0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0,
-//            };
     const int level[] =
             {
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
-                    0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-                    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
-                    0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+                    0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 1, 1, 3, 3, 0,
+                    0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1, 0, 3, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 1, 0, 2, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 1, 0, 0, 1, 1, 1,
                     0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
             };
 
@@ -77,7 +73,6 @@ void Game::initLevel()
 void Game::initMap()
 {
     this->mapMap = new TileMap();
-    std::cout << "TODO" << std::endl;
 }
 
 void Game::run() {
@@ -101,7 +96,11 @@ void Game::updatePollEvents() {
 
 void Game::update() {
     if (this->player->getHp() != 0) {
-        this->updateInput();
+        if (this->movementTimer == 0) {
+            this->updateInput();
+            this->movementTimer = 10;
+        }
+        else { this->movementTimer -= 1; }
     }
     else {
         sf::Event e;
@@ -189,12 +188,12 @@ void Game::updateInput() {
     const int levelMapTwo[] =
             {
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3,
-                    0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 1, 1, 0, 0, 0,
-                    0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1, 2, 0, 0,
-                    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 1, 1, 2, 0,
-                    0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 1, 1, 1, 1, 1, 1,
+                    0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 1, 1, 1, 3, 3, 0,
+                    0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 1, 1, 0, 3, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 1, 1, 1, 0, 2, 0,
+                    0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 1, 0, 0, 1, 1, 1,
                     0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 1, 1, 1, 1,
             };
     std::cout << this->player->getTileX() << " " << this->player->getTileY() << std::endl;
@@ -204,7 +203,7 @@ void Game::updateInput() {
         this->player->setAnimationFacing(1);
         int newX = player->getTileX() - 1;
         int newY = player->getTileY();
-        if (newX >= 0 && levelMapTwo[newX + newY * 16] == 0) {
+        if (newX >= 0 && (levelMapTwo[newX + newY * 16] == 0 or levelMapTwo[newX + newY * 16] == 3)) {
             this->player->move(-1.f, 0.f);
             this->player->setTileX(-1);
         }
@@ -213,7 +212,7 @@ void Game::updateInput() {
         this->player->setAnimationFacing(2);
         int newX = player->getTileX() + 1;
         int newY = player->getTileY();
-        if (newX < 16 && levelMapTwo[newX + newY * 16] == 0) {
+        if (newX < 16 && (levelMapTwo[newX + newY * 16] == 0 or levelMapTwo[newX + newY * 16] == 3)) {
             this->player->move(1.f, 0.f);
             this->player->setTileX(1);
         }
@@ -222,7 +221,7 @@ void Game::updateInput() {
         this->player->setAnimationFacing(4);
         int newX = player->getTileX();
         int newY = player->getTileY() - 1;
-        if (newY >= 0 && levelMapTwo[newX + newY * 16] == 0) {
+        if (newY >= 0 && (levelMapTwo[newX + newY * 16] == 0 or levelMapTwo[newX + newY * 16] == 3)) {
             this->player->move(0.f, -1.f);
             this->player->setTileY(-1);
         }
@@ -231,7 +230,7 @@ void Game::updateInput() {
         this->player->setAnimationFacing(4);
         int newX = player->getTileX();
         int newY = player->getTileY() + 1;
-        if (newY < 8 && levelMapTwo[newX + newY * 16] == 0) {
+        if (newY < 8 && (levelMapTwo[newX + newY * 16] == 0 or levelMapTwo[newX + newY * 16] == 3)) {
             this->player->move(0.f, 1.f);
             this->player->setTileY(1);
         }
@@ -287,8 +286,8 @@ void Game::initWindow() {
 void Game::render() {
     this->window->clear();
     this->window->draw(this->worldBackground);
-    player_view.setCenter(player->getPos());
-    this->window->setView(player_view);
+    gameView.setCenter(player->getPos());
+    this->window->setView(gameView);
     this->window->draw(*mapMap);
     for (auto& chest : chests) {
         chest->render(*this->window);
@@ -297,7 +296,8 @@ void Game::render() {
     for (auto& enemy : enemies) {
         enemy->render(*this->window);
     }
-    this->renderGUI();
+    this->window->setView(guiView);
+    renderGUI();
     this->window->display();
 }
 
