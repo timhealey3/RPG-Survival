@@ -25,9 +25,10 @@ Chest::~Chest() {
 }
 
 void Chest::setPosition() {
-    int x = std::rand() % 2050;
-    int y = std::rand() % 962;
-    this->shape.setPosition(x,y);
+    int x = std::rand() % 15;
+    int y = std::rand() % 7;
+    this->setTileX(x);
+    this->setTileY(y);
 }
 
 void Chest::initShape() {
@@ -101,8 +102,20 @@ bool Chest::getOpened() {
         return true;
 }
 
+int Chest::getTileX() {
+    return tileX;
+}
 
+int Chest::getTileY() {
+    return tileY;
+}
 
+void Chest::setTileY(int change) {
+    tileX += change;
+    shape.setPosition(tileX * 32, tileY * 32);
+}
 
-
-
+void Chest::setTileX(int change) {
+    tileY += change;
+    shape.setPosition(tileX * 32, tileY * 32);
+}

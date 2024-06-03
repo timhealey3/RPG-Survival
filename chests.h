@@ -15,6 +15,8 @@ private:
     sf::Sprite shape;
     sf::Texture texture;
     Item* item;
+    int tileX;
+    int tileY;
     int tier;
     int cost;
     bool opened;
@@ -33,6 +35,11 @@ public:
     void setItem();
     bool getOpened();
     void setPosition();
+
+    void setTileY(int change);
+    void setTileX(int change);
+    int getTileX();
+    int getTileY();
 };
 
 

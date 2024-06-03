@@ -31,6 +31,8 @@ private:
     bool isLeft;
     bool isRight;
     bool isIdle;
+    float scaleX;
+    float scaleY;
     bool isTakingDmg;
     int damage;
     float attackCooldown;
@@ -71,6 +73,7 @@ public:
 
     bool getAttacking();
 
+    void updateAnimation();
 };
 
 

@@ -203,7 +203,8 @@ void Game::updateInput() {
         this->player->setAnimationFacing(1);
         int newX = player->getTileX() - 1;
         int newY = player->getTileY();
-        if (newX >= 0 && (levelMapTwo[newX + newY * 16] == 0 or levelMapTwo[newX + newY * 16] == 3)) {
+
+        if (newX >= 0 && (levelMapTwo[newX + newY * 16] == 0 || levelMapTwo[newX + newY * 16] == 3)) {
             this->player->move(-1.f, 0.f);
             this->player->setTileX(-1);
         }

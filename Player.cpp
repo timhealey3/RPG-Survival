@@ -32,21 +32,27 @@ void Player::move(const float dirX, const float dirY) {
 }
 
 void Player::initSprite() {
-    texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/char1.png");
+    // Load the texture
+    if (!texture.loadFromFile("/Users/timhealey/CLionProjects/rpgGame/Tileset/char1.png")) {
+       std::cout << "ERROR::PLAYER::TEXTURE LOADING" << std::endl;
+    }
     sprite.setTexture(texture);
 
-    // Set the sprite size
+
     spriteSize.x = 56;
     spriteSize.y = 56;
 
+    // Set the texture rect to use the first frame of 56x56 pixels
     sprite.setTextureRect(sf::IntRect(0, 0, spriteSize.x, spriteSize.y));
 
-    float scaleX = 32.0f / spriteSize.x;
-    float scaleY = 32.0f / spriteSize.y;
+    this->scaleX = 32.0f / spriteSize.x;
+    this->scaleY = 32.0f / spriteSize.y;
 
-    // Scale the sprite
     sprite.setScale(scaleX, scaleY);
+
+    sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
 }
+
 
 void Player::setPosition(const float x, const float y) {
     this->sprite.setPosition(x,y);
@@ -72,8 +78,32 @@ void Player::updateCooldown() {
 
 void Player::update() {
     this->updateCooldown();
+    this->updateAnimation();
 }
 
+void Player::updateAnimation(){
+    if (this->isIdle) {
+        if (animationClock.getElapsedTime().asSeconds() > animationSpeed) {
+            // Update the texture rect based on the current frame
+            sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
+            if (this->isRight) {
+                sprite.setScale(this->scaleX, this->scaleY);
+            }
+            if (this->isLeft) {
+                sprite.setScale(-this->scaleX, this->scaleY);
+            }
+            sprite.setTextureRect(sf::IntRect(currentFrame * 56, 0, 56, 56));
+            // Increment the current frame
+            currentFrame++;
+            // Wrap the animation loop
+            if (currentFrame >= frameSword) {
+                currentFrame = 0;
+            }
+            // Restart the animation clock
+            animationClock.restart();
+        }
+    }
+}
 
 void Player::render(sf::RenderTarget &target) {
     target.draw(this->sprite);
@@ -98,7 +128,7 @@ void Player::addGold(int addGold) {
 void Player::attackAnimation() {
     // Increment the current frames
     this->isAttacking = true;
-    sprite.setOrigin(spriteSize.x / 16.f, spriteSize.y / 16.f);
+    sprite.setOrigin(spriteSize.x / 2.f, spriteSize.y / 2.f);
 
     if (animationClock.getElapsedTime().asSeconds() > animationSpeed) {
         // Update the texture rect based on the current frame
